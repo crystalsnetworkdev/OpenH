@@ -10,11 +10,13 @@ var searchData=
   ['sha384',['sha384',['../sha_8h.html#affadfe6c709bb1b7565b284c7cdf372c',1,'sha.h']]],
   ['sha384_5fdigest_5fsize',['SHA384_DIGEST_SIZE',['../sha_8h.html#afb6d310df497c25c1e85af07f71ee2b3',1,'sha.h']]],
   ['sha512',['sha512',['../sha_8h.html#af177d2e501a2d8ecd275ef4f97adcffc',1,'sha.h']]],
+  ['sha512_5f224',['sha512_224',['../sha_8h.html#a8c6951335f91ea524b4f32e54f97d768',1,'sha.h']]],
+  ['sha512_5f256',['sha512_256',['../sha_8h.html#a9958a57ccc002ae61e7cfb9ce91f8be6',1,'sha.h']]],
   ['sha512_5fdigest_5fsize',['SHA512_DIGEST_SIZE',['../sha_8h.html#a67f489f3eee39c447a6db3ba34ef75f2',1,'sha.h']]],
   ['shl',['SHL',['../utils_8h.html#aca0b546d028a8de0a98389f285036296',1,'utils.h']]],
   ['shr',['SHR',['../utils_8h.html#a34f8c30efd49bafaaef210c443a467dc',1,'utils.h']]],
-  ['sigma256_5f0',['sigma256_0',['../sha_8h.html#a613a3eb728cb67c2a272abd0eecc22a1',1,'sigma256_0():&#160;sha.h'],['../sha_8h.html#ab83755c418a08fe3e9711c4aa7addba8',1,'SIGMA256_0():&#160;sha.h']]],
+  ['sigma256_5f0',['SIGMA256_0',['../sha_8h.html#ab83755c418a08fe3e9711c4aa7addba8',1,'SIGMA256_0():&#160;sha.h'],['../sha_8h.html#a613a3eb728cb67c2a272abd0eecc22a1',1,'sigma256_0():&#160;sha.h']]],
   ['sigma256_5f1',['sigma256_1',['../sha_8h.html#a298582b332c5fb1859f2742277de0eaa',1,'sigma256_1():&#160;sha.h'],['../sha_8h.html#adc21dce3b1bba83e8b48be14c1447384',1,'SIGMA256_1():&#160;sha.h']]],
-  ['sigma512_5f0',['SIGMA512_0',['../sha_8h.html#a6b737c717e32cbd2224fb3600d960292',1,'SIGMA512_0():&#160;sha.h'],['../sha_8h.html#a69a7c03c9355bbe4a30e6334c6ec78e1',1,'sigma512_0():&#160;sha.h']]],
-  ['sigma512_5f1',['SIGMA512_1',['../sha_8h.html#a696248585a4052ec5f625c791931553d',1,'SIGMA512_1():&#160;sha.h'],['../sha_8h.html#a50cee3704dc1395d3de63f9569372194',1,'sigma512_1():&#160;sha.h']]]
+  ['sigma512_5f0',['sigma512_0',['../sha_8h.html#a69a7c03c9355bbe4a30e6334c6ec78e1',1,'sigma512_0():&#160;sha.h'],['../sha_8h.html#a6b737c717e32cbd2224fb3600d960292',1,'SIGMA512_0():&#160;sha.h']]],
+  ['sigma512_5f1',['sigma512_1',['../sha_8h.html#a50cee3704dc1395d3de63f9569372194',1,'sigma512_1():&#160;sha.h'],['../sha_8h.html#a696248585a4052ec5f625c791931553d',1,'SIGMA512_1():&#160;sha.h']]]
 ];

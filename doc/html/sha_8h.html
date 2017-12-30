@@ -164,6 +164,12 @@ Functions</h2></td></tr>
 <tr class="memitem:affadfe6c709bb1b7565b284c7cdf372c"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#affadfe6c709bb1b7565b284c7cdf372c">sha384</a> (void *dig, const void *msg, size_t size)</td></tr>
 <tr class="memdesc:affadfe6c709bb1b7565b284c7cdf372c"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-384 hash.  <a href="#affadfe6c709bb1b7565b284c7cdf372c">More...</a><br /></td></tr>
 <tr class="separator:affadfe6c709bb1b7565b284c7cdf372c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9958a57ccc002ae61e7cfb9ce91f8be6"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a9958a57ccc002ae61e7cfb9ce91f8be6">sha512_256</a> (void *dig, const void *msg, size_t size)</td></tr>
+<tr class="memdesc:a9958a57ccc002ae61e7cfb9ce91f8be6"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-512/256 hash.  <a href="#a9958a57ccc002ae61e7cfb9ce91f8be6">More...</a><br /></td></tr>
+<tr class="separator:a9958a57ccc002ae61e7cfb9ce91f8be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c6951335f91ea524b4f32e54f97d768"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a8c6951335f91ea524b4f32e54f97d768">sha512_224</a> (void *dig, const void *msg, size_t size)</td></tr>
+<tr class="memdesc:a8c6951335f91ea524b4f32e54f97d768"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-512/224 hash.  <a href="#a8c6951335f91ea524b4f32e54f97d768">More...</a><br /></td></tr>
+<tr class="separator:a8c6951335f91ea524b4f32e54f97d768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SHA1, SHA2 implementations. </p>
@@ -424,10 +430,112 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a9958a57ccc002ae61e7cfb9ce91f8be6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9958a57ccc002ae61e7cfb9ce91f8be6">&#9670;&nbsp;</a></span>sha512_256()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* sha512_256 </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>dig</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>msg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>SHA-512/256 hash. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">dig</td><td>The digest buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="sha_8h.html#a81efbc0fc101b06a914f7ff9e2fbc0e9" title="SHA-256 digest size in bytes. ">SHA256_DIGEST_SIZE</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">msg</td><td>The message buffer to hash </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of the message buffer to hash in bytes </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>NULL if an error occured, a pointer to the digest buffer otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a8c6951335f91ea524b4f32e54f97d768"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c6951335f91ea524b4f32e54f97d768">&#9670;&nbsp;</a></span>sha512_224()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* sha512_224 </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>dig</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>msg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>SHA-512/224 hash. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">dig</td><td>The digest buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="sha_8h.html#a5cf10abb15f8976aee47a3b9fceddfe7" title="SHA-224 digest size in bytes. ">SHA224_DIGEST_SIZE</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">msg</td><td>The message buffer to hash </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of the message buffer to hash in bytes </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>NULL if an error occured, a pointer to the digest buffer otherwise </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Dec 30 2017 13:47:26 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 30 2017 13:57:25 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

@@ -7,6 +7,8 @@
 	- SHA-224
 	- SHA-512
 	- SHA-384
+	- SHA-512/256
+	- SHA-512/224
 
 # License
 **OpenHL** is under zlib license.
