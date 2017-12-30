@@ -40,4 +40,20 @@
 ///
 void* sha1(void* dig, const void* msg, size_t size);
 
+/// \brief SHA-256 hash
+/// \param[out] dig The digest buffer \see SHA256_DIGEST_SIZE
+/// \param[in] msg The message buffer to hash
+/// \param[in] size The size of the message buffer to hash in bytes
+/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+///
+void* sha256(void* dig, const void* msg, size_t size);
+
+/// \brief SHA-224 hash
+/// \param[out] dig The digest buffer \see SHA224_DIGEST_SIZE
+/// \param[in] msg The message buffer to hash
+/// \param[in] size The size of the message buffer to hash in bytes
+/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+///
+void* sha224(void* dig, const void* msg, size_t size);
+
 
