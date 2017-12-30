@@ -56,4 +56,20 @@ void* sha256(void* dig, const void* msg, size_t size);
 ///
 void* sha224(void* dig, const void* msg, size_t size);
 
+/// \brief SHA-512 hash
+/// \param[out] dig The digest buffer \see SHA512_DIGEST_SIZE
+/// \param[in] msg The message buffer to hash
+/// \param[in] size The size of the message buffer to hash in bytes
+/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+///
+void* sha512(void* dig, const void* msg, size_t size);
+
+/// \brief SHA-384 hash
+/// \param[out] dig The digest buffer \see SHA384_DIGEST_SIZE
+/// \param[in] msg The message buffer to hash
+/// \param[in] size The size of the message buffer to hash in bytes
+/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+///
+void* sha384(void* dig, const void* msg, size_t size);
+
 

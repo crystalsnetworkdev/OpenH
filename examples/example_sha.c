@@ -63,6 +63,28 @@ int main(int argc, char* argv[])
 		print_digest(digest, SHA224_DIGEST_SIZE);
 	}
 
+	// 555f92af04069fddb65e80449b9046d871b923494e7d51cf748595a574be7f6f630e9172acb10e4826efce5e97841d2602695cc7bd66e262fe92bdd8172688c6
+	{
+		uint8_t digest[SHA512_DIGEST_SIZE];
+
+		sha512(digest, Message, sizeof(Message));
+
+		printf("SHA-512     : ");
+
+		print_digest(digest, SHA512_DIGEST_SIZE);
+	}
+
+	// dadb9dbd987fe35fa144370888b2486db83d8dd2aa6674c3812b9b691319534dd18e980ec3f32415e42f771e35912953
+	{
+		uint8_t digest[SHA384_DIGEST_SIZE];
+
+		sha384(digest, Message, sizeof(Message));
+
+		printf("SHA-384     : ");
+
+		print_digest(digest, SHA384_DIGEST_SIZE);
+	}
+
 	return 0;
 }
 
