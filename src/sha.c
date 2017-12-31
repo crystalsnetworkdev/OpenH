@@ -153,7 +153,7 @@ void* sha1(void* dig, const void* msg, size_t size)
 	// pad m
 	m[size] = 0x80;
 	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = BSWAP64(size * 8);
+	uint64_t l = BIG_ENDIAN64(size * 8);
 	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
 
 	// the message schedule
@@ -179,7 +179,7 @@ void* sha1(void* dig, const void* msg, size_t size)
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
 		{
-			w[t] = BSWAP32(((uint32_t*)(m + i * 64))[t]);
+			w[t] = BIG_ENDIAN32(((uint32_t*)(m + i * 64))[t]);
 		}
 
 		for(size_t t = 16; t < 80; ++t)
@@ -244,11 +244,11 @@ void* sha1(void* dig, const void* msg, size_t size)
 	free(m);
 
 	// compose the digest
-	((uint32_t*)dig)[0] = BSWAP32(h0);
-	((uint32_t*)dig)[1] = BSWAP32(h1);
-	((uint32_t*)dig)[2] = BSWAP32(h2);
-	((uint32_t*)dig)[3] = BSWAP32(h3);
-	((uint32_t*)dig)[4] = BSWAP32(h4);
+	((uint32_t*)dig)[0] = BIG_ENDIAN32(h0);
+	((uint32_t*)dig)[1] = BIG_ENDIAN32(h1);
+	((uint32_t*)dig)[2] = BIG_ENDIAN32(h2);
+	((uint32_t*)dig)[3] = BIG_ENDIAN32(h3);
+	((uint32_t*)dig)[4] = BIG_ENDIAN32(h4);
 
 	return dig;
 }
@@ -274,7 +274,7 @@ void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 	// pad m
 	m[size] = 0x80;
 	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = BSWAP64(size * 8);
+	uint64_t l = BIG_ENDIAN64(size * 8);
 	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
 
 	// the message schedule
@@ -303,7 +303,7 @@ void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
 		{
-			w[t] = BSWAP32(((uint32_t*)(m + i * 64))[t]);
+			w[t] = BIG_ENDIAN32(((uint32_t*)(m + i * 64))[t]);
 		}
 
 		for(size_t t = 16; t < 64; ++t)
@@ -347,14 +347,14 @@ void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 	free(m);
 
 	// compose the digest
-	((uint32_t*)dig)[0] = BSWAP32(h0);
-	((uint32_t*)dig)[1] = BSWAP32(h1);
-	((uint32_t*)dig)[2] = BSWAP32(h2);
-	((uint32_t*)dig)[3] = BSWAP32(h3);
-	((uint32_t*)dig)[4] = BSWAP32(h4);
-	((uint32_t*)dig)[5] = BSWAP32(h5);
-	((uint32_t*)dig)[6] = BSWAP32(h6);
-	((uint32_t*)dig)[7] = BSWAP32(h7);
+	((uint32_t*)dig)[0] = BIG_ENDIAN32(h0);
+	((uint32_t*)dig)[1] = BIG_ENDIAN32(h1);
+	((uint32_t*)dig)[2] = BIG_ENDIAN32(h2);
+	((uint32_t*)dig)[3] = BIG_ENDIAN32(h3);
+	((uint32_t*)dig)[4] = BIG_ENDIAN32(h4);
+	((uint32_t*)dig)[5] = BIG_ENDIAN32(h5);
+	((uint32_t*)dig)[6] = BIG_ENDIAN32(h6);
+	((uint32_t*)dig)[7] = BIG_ENDIAN32(h7);
 
 	return dig;
 }
@@ -380,7 +380,7 @@ void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
 	// pad m
 	m[size] = 0x80;
 	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = BSWAP64(size * 8);
+	uint64_t l = BIG_ENDIAN64(size * 8);
 	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
 
 	// the message schedule
@@ -409,7 +409,7 @@ void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
 		{
-			w[t] = BSWAP64(((uint64_t*)(m + i * 128))[t]);
+			w[t] = BIG_ENDIAN64(((uint64_t*)(m + i * 128))[t]);
 		}
 
 		for(size_t t = 16; t < 80; ++t)
@@ -453,14 +453,14 @@ void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
 	free(m);
 
 	// compose the digest
-	((uint64_t*)dig)[0] = BSWAP64(h0);
-	((uint64_t*)dig)[1] = BSWAP64(h1);
-	((uint64_t*)dig)[2] = BSWAP64(h2);
-	((uint64_t*)dig)[3] = BSWAP64(h3);
-	((uint64_t*)dig)[4] = BSWAP64(h4);
-	((uint64_t*)dig)[5] = BSWAP64(h5);
-	((uint64_t*)dig)[6] = BSWAP64(h6);
-	((uint64_t*)dig)[7] = BSWAP64(h7);
+	((uint64_t*)dig)[0] = BIG_ENDIAN64(h0);
+	((uint64_t*)dig)[1] = BIG_ENDIAN64(h1);
+	((uint64_t*)dig)[2] = BIG_ENDIAN64(h2);
+	((uint64_t*)dig)[3] = BIG_ENDIAN64(h3);
+	((uint64_t*)dig)[4] = BIG_ENDIAN64(h4);
+	((uint64_t*)dig)[5] = BIG_ENDIAN64(h5);
+	((uint64_t*)dig)[6] = BIG_ENDIAN64(h6);
+	((uint64_t*)dig)[7] = BIG_ENDIAN64(h7);
 
 	return dig;
 }

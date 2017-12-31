@@ -85,6 +85,14 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#abfe90b65dc156977f14c9da5b4c46a94">BSWAP64</a>(x)&#160;&#160;&#160;__builtin_bswap64(x)</td></tr>
 <tr class="memdesc:abfe90b65dc156977f14c9da5b4c46a94"><td class="mdescLeft">&#160;</td><td class="mdescRight">64-bit byte swap <br /></td></tr>
 <tr class="separator:abfe90b65dc156977f14c9da5b4c46a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85bfe82d22c1b93d8e812c8adfc974ff"><td class="memItemLeft" align="right" valign="top"><a id="a85bfe82d22c1b93d8e812c8adfc974ff"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a85bfe82d22c1b93d8e812c8adfc974ff">BIG_ENDIAN32</a>(x)&#160;&#160;&#160;((*(char*)&amp;(long){1}) ? <a class="el" href="utils_8h.html#a10a33c6d9f0f240b071460be8f387d9c">BSWAP32</a>(x) : (x))</td></tr>
+<tr class="memdesc:a85bfe82d22c1b93d8e812c8adfc974ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cross platform 32-bit big endian conversion. <br /></td></tr>
+<tr class="separator:a85bfe82d22c1b93d8e812c8adfc974ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bd326c6e89a93f7ec920bd6c3783a59"><td class="memItemLeft" align="right" valign="top"><a id="a3bd326c6e89a93f7ec920bd6c3783a59"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a3bd326c6e89a93f7ec920bd6c3783a59">BIG_ENDIAN64</a>(x)&#160;&#160;&#160;((*(char*)&amp;(long){1}) ? <a class="el" href="utils_8h.html#abfe90b65dc156977f14c9da5b4c46a94">BSWAP64</a>(x) : (x))</td></tr>
+<tr class="memdesc:a3bd326c6e89a93f7ec920bd6c3783a59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cross platform 64-bit big endian conversion. <br /></td></tr>
+<tr class="separator:a3bd326c6e89a93f7ec920bd6c3783a59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af931bf11c41af34dde1b90f1b26488f6"><td class="memItemLeft" align="right" valign="top"><a id="af931bf11c41af34dde1b90f1b26488f6"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#af931bf11c41af34dde1b90f1b26488f6">ROTL32</a>(x,  n)&#160;&#160;&#160;(((x) &lt;&lt; (n)) | ((x) &gt;&gt; (32 - (n))))</td></tr>
 <tr class="memdesc:af931bf11c41af34dde1b90f1b26488f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left rotation 32-bit. <br /></td></tr>
@@ -115,7 +123,7 @@ Macros</h2></td></tr>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 31 2017 10:20:27 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 31 2017 11:07:58 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
