@@ -18,6 +18,10 @@
 #define SHA384_DIGEST_SIZE 48 ///< SHA-384 digest size in bytes
 #define SHA512_DIGEST_SIZE 64 ///< SHA-512 digest size in bytes
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 /// \brief SHA-1 hash
 /// \param[out] dig The digest buffer \see SHA1_DIGEST_SIZE
 /// \param[in] msg The message buffer to hash
@@ -73,5 +77,9 @@ void* sha512_256(void* dig, const void* msg, size_t size);
 /// \return NULL if an error occured, a pointer to the digest buffer otherwise
 ///
 void* sha512_224(void* dig, const void* msg, size_t size);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 
