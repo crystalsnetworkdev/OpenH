@@ -102,50 +102,6 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a67f489f3eee39c447a6db3ba34ef75f2">SHA512_DIGEST_SIZE</a>&#160;&#160;&#160;64</td></tr>
 <tr class="memdesc:a67f489f3eee39c447a6db3ba34ef75f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-512 digest size in bytes. <br /></td></tr>
 <tr class="separator:a67f489f3eee39c447a6db3ba34ef75f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ed6c9c714485592a8c317a8ad91c83b"><td class="memItemLeft" align="right" valign="top"><a id="a0ed6c9c714485592a8c317a8ad91c83b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a0ed6c9c714485592a8c317a8ad91c83b">CH</a>(x,  y,  z)&#160;&#160;&#160;(((x) &amp; (y)) ^ (~(x) &amp; (z)))</td></tr>
-<tr class="memdesc:a0ed6c9c714485592a8c317a8ad91c83b"><td class="mdescLeft">&#160;</td><td class="mdescRight">CH function (4.1) (4.2) (4.8) <br /></td></tr>
-<tr class="separator:a0ed6c9c714485592a8c317a8ad91c83b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2f6c7a0b4fdb15387259356b16854c9"><td class="memItemLeft" align="right" valign="top"><a id="ae2f6c7a0b4fdb15387259356b16854c9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#ae2f6c7a0b4fdb15387259356b16854c9">MAJ</a>(x,  y,  z)&#160;&#160;&#160;(((x) &amp; (y)) ^ ((x) &amp; (z)) ^ ((y) &amp; (z)))</td></tr>
-<tr class="memdesc:ae2f6c7a0b4fdb15387259356b16854c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">MAJ function (4.1) (4.3) (4.9) <br /></td></tr>
-<tr class="separator:ae2f6c7a0b4fdb15387259356b16854c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac03135817d886de6383be444fb9e3eda"><td class="memItemLeft" align="right" valign="top"><a id="ac03135817d886de6383be444fb9e3eda"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#ac03135817d886de6383be444fb9e3eda">PARITY</a>(x,  y,  z)&#160;&#160;&#160;((x) ^ (y) ^ (z))</td></tr>
-<tr class="memdesc:ac03135817d886de6383be444fb9e3eda"><td class="mdescLeft">&#160;</td><td class="mdescRight">PARITY function (4.1) <br /></td></tr>
-<tr class="separator:ac03135817d886de6383be444fb9e3eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab83755c418a08fe3e9711c4aa7addba8"><td class="memItemLeft" align="right" valign="top"><a id="ab83755c418a08fe3e9711c4aa7addba8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#ab83755c418a08fe3e9711c4aa7addba8">SIGMA256_0</a>(x)&#160;&#160;&#160;(<a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x,  2) ^ <a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x, 13) ^ <a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x, 22))</td></tr>
-<tr class="memdesc:ab83755c418a08fe3e9711c4aa7addba8"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-224 SHA-256 SIGMA0 function (4.4) <br /></td></tr>
-<tr class="separator:ab83755c418a08fe3e9711c4aa7addba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc21dce3b1bba83e8b48be14c1447384"><td class="memItemLeft" align="right" valign="top"><a id="adc21dce3b1bba83e8b48be14c1447384"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#adc21dce3b1bba83e8b48be14c1447384">SIGMA256_1</a>(x)&#160;&#160;&#160;(<a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x,  6) ^ <a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x, 11) ^ <a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x, 25))</td></tr>
-<tr class="memdesc:adc21dce3b1bba83e8b48be14c1447384"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-224 SHA-256 SIGMA1 function (4.5) <br /></td></tr>
-<tr class="separator:adc21dce3b1bba83e8b48be14c1447384"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a613a3eb728cb67c2a272abd0eecc22a1"><td class="memItemLeft" align="right" valign="top"><a id="a613a3eb728cb67c2a272abd0eecc22a1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a613a3eb728cb67c2a272abd0eecc22a1">sigma256_0</a>(x)&#160;&#160;&#160;(<a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x,  7) ^ <a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x, 18) ^    <a class="el" href="utils_8h.html#a34f8c30efd49bafaaef210c443a467dc">SHR</a>(x,  3))</td></tr>
-<tr class="memdesc:a613a3eb728cb67c2a272abd0eecc22a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-224 SHA-256 sigma0 function (4.6) <br /></td></tr>
-<tr class="separator:a613a3eb728cb67c2a272abd0eecc22a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a298582b332c5fb1859f2742277de0eaa"><td class="memItemLeft" align="right" valign="top"><a id="a298582b332c5fb1859f2742277de0eaa"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a298582b332c5fb1859f2742277de0eaa">sigma256_1</a>(x)&#160;&#160;&#160;(<a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x, 17) ^ <a class="el" href="utils_8h.html#a4b0e17ca4e86b51c122d174c3e0ab483">ROTR32</a>(x, 19) ^    <a class="el" href="utils_8h.html#a34f8c30efd49bafaaef210c443a467dc">SHR</a>(x, 10))</td></tr>
-<tr class="memdesc:a298582b332c5fb1859f2742277de0eaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-224 SHA-256 sigma1 function (4.7) <br /></td></tr>
-<tr class="separator:a298582b332c5fb1859f2742277de0eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b737c717e32cbd2224fb3600d960292"><td class="memItemLeft" align="right" valign="top"><a id="a6b737c717e32cbd2224fb3600d960292"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a6b737c717e32cbd2224fb3600d960292">SIGMA512_0</a>(x)&#160;&#160;&#160;(<a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x, 28) ^ <a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x, 34) ^ <a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x, 39))</td></tr>
-<tr class="memdesc:a6b737c717e32cbd2224fb3600d960292"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-384 SHA-512 SHA-512/224 SHA-512/256 SIGMA0 function (4.10) <br /></td></tr>
-<tr class="separator:a6b737c717e32cbd2224fb3600d960292"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a696248585a4052ec5f625c791931553d"><td class="memItemLeft" align="right" valign="top"><a id="a696248585a4052ec5f625c791931553d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a696248585a4052ec5f625c791931553d">SIGMA512_1</a>(x)&#160;&#160;&#160;(<a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x, 14) ^ <a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x, 18) ^ <a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x, 41))</td></tr>
-<tr class="memdesc:a696248585a4052ec5f625c791931553d"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-384 SHA-512 SHA-512/224 SHA-512/256 SIGMA1 function (4.11) <br /></td></tr>
-<tr class="separator:a696248585a4052ec5f625c791931553d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69a7c03c9355bbe4a30e6334c6ec78e1"><td class="memItemLeft" align="right" valign="top"><a id="a69a7c03c9355bbe4a30e6334c6ec78e1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a69a7c03c9355bbe4a30e6334c6ec78e1">sigma512_0</a>(x)&#160;&#160;&#160;(<a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x,  1) ^ <a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x,  8) ^    <a class="el" href="utils_8h.html#a34f8c30efd49bafaaef210c443a467dc">SHR</a>(x,  7))</td></tr>
-<tr class="memdesc:a69a7c03c9355bbe4a30e6334c6ec78e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-384 SHA-512 SHA-512/224 SHA-512/256 sigma0 function (4.12) <br /></td></tr>
-<tr class="separator:a69a7c03c9355bbe4a30e6334c6ec78e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50cee3704dc1395d3de63f9569372194"><td class="memItemLeft" align="right" valign="top"><a id="a50cee3704dc1395d3de63f9569372194"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha_8h.html#a50cee3704dc1395d3de63f9569372194">sigma512_1</a>(x)&#160;&#160;&#160;(<a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x, 19) ^ <a class="el" href="utils_8h.html#acd84d952de5690225855b76b308db6e8">ROTR64</a>(x, 61) ^    <a class="el" href="utils_8h.html#a34f8c30efd49bafaaef210c443a467dc">SHR</a>(x,  6))</td></tr>
-<tr class="memdesc:a50cee3704dc1395d3de63f9569372194"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-384 SHA-512 SHA-512/224 SHA-512/256 sigma1 function (4.13) <br /></td></tr>
-<tr class="separator:a50cee3704dc1395d3de63f9569372194"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -535,7 +491,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Dec 30 2017 13:57:25 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 31 2017 10:13:09 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
