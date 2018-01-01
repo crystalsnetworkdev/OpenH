@@ -9,8 +9,11 @@
 #define BSWAP32(x) __builtin_bswap32(x) ///< 32-bit byte swap
 #define BSWAP64(x) __builtin_bswap64(x) ///< 64-bit byte swap
 
-#define BIG_ENDIAN32(x) ((*(char*)&(long){1}) ? BSWAP32(x) : (x)) ///< Cross platform 32-bit big endian conversion
-#define BIG_ENDIAN64(x) ((*(char*)&(long){1}) ? BSWAP64(x) : (x)) ///< Cross platform 64-bit big endian conversion
+#define BIG_ENDIAN32(x)    ((*(char*)&(long){1}) ? BSWAP32(x) : (x)) ///< Cross platform 32-bit big endian conversion
+#define BIG_ENDIAN64(x)    ((*(char*)&(long){1}) ? BSWAP64(x) : (x)) ///< Cross platform 64-bit big endian conversion
+
+#define LITTLE_ENDIAN32(x) ((*(char*)&(long){1}) ? (x) : BSWAP32(x)) ///< Cross platform 32-bit little endian conversion
+#define LITTLE_ENDIAN64(x) ((*(char*)&(long){1}) ? (x) : BSWAP64(x)) ///< Cross platform 64-bit little endian conversion
 
 #define ROTL32(x, n) (((x) << (n)) | ((x) >> (32 - (n)))) ///< Left rotation 32-bit
 #define ROTL64(x, n) (((x) << (n)) | ((x) >> (64 - (n)))) ///< Left rotation 64-bit

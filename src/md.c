@@ -54,7 +54,7 @@ void* md5(void* dig, const void* msg, size_t size)
 	// pad m
 	m[size] = 0x80;
 	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = size * 8;
+	uint64_t l = LITTLE_ENDIAN64(size * 8);
 	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
 
 	// set the initial hash values
@@ -158,10 +158,10 @@ void* md5(void* dig, const void* msg, size_t size)
 	}
 
 	// compose the digest
-	((uint32_t*)dig)[0] = h0;
-	((uint32_t*)dig)[1] = h1;
-	((uint32_t*)dig)[2] = h2;
-	((uint32_t*)dig)[3] = h3;
+	((uint32_t*)dig)[0] = LITTLE_ENDIAN32(h0);
+	((uint32_t*)dig)[1] = LITTLE_ENDIAN32(h1);
+	((uint32_t*)dig)[2] = LITTLE_ENDIAN32(h2);
+	((uint32_t*)dig)[3] = LITTLE_ENDIAN32(h3);
 
 	return dig;
 }
