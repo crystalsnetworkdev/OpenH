@@ -7,4 +7,5 @@
 #pragma once
 
 #include "sha.h"
+#include "md.h"
 
