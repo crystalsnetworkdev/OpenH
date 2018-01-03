@@ -157,7 +157,7 @@ void* md4(void* dig, const void* msg, size_t size)
 		MD4_HASH_STEP2( 7, 11)
 		MD4_HASH_STEP2(15, 15)
 
-		// compute the intermediate jth hash value
+		// compute the intermediate ith hash value
 		h0 += a;
 		h1 += b;
 		h2 += c;
@@ -289,7 +289,7 @@ void* md5(void* dig, const void* msg, size_t size)
 		MD5_HASH_STEP3(62, 15, 0x2ad7d2bb)
 		MD5_HASH_STEP3(63, 21, 0xeb86d391)
 
-		// compute the intermediate jth hash value
+		// compute the intermediate ith hash value
 		h0 += a;
 		h1 += b;
 		h2 += c;
