@@ -30,6 +30,17 @@ void print_digest(const uint8_t* digest, size_t size)
 
 int main(int argc, char* argv[])
 {
+	// a7bcf51eb37dd690096018ba7aedf761
+	{
+		uint8_t digest[MD4_DIGEST_SIZE];
+
+		md4(digest, Message, sizeof(Message));
+
+		printf("MD4      : ");
+
+		print_digest(digest, MD4_DIGEST_SIZE);
+	}
+
 	// 5c7f8672e958cc90da362fcf5d43c2a1
 	{
 		uint8_t digest[MD5_DIGEST_SIZE];
