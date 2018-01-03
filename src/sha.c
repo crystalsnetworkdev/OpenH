@@ -133,16 +133,13 @@ static const uint64_t InitialHashSHA512_224[8] =
 	0x8C3D37C819544DA2, 0x73E1996689DCD4D6, 0x1DFAB7AE32FF9C82, 0x679DD514582F9FCF, 0x0F6D2B697BD44DA8, 0x77E36F7304C48942, 0x3F9D85A86A1D36C8, 0x1112E6AD91D692A1 
 };
 
-void* sha1(void* dig, const void* msg, size_t size)
+uint8_t* __sha32_init(const void* msg, size_t size, size_t* m_size)
 {
 	// compute the size of the m buffer that must be a multiple of 64
-	size_t m_size = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
-
-	// compute the number of blocks
-	size_t block_cnt = m_size / 64;
+	size_t size64 = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
 
 	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(m_size);
+	uint8_t* m = (uint8_t*)malloc(size64);
 
 	if(!m)
 		return NULL;
@@ -152,9 +149,54 @@ void* sha1(void* dig, const void* msg, size_t size)
 
 	// pad m
 	m[size] = 0x80;
-	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
+	memset(m + size + 1, 0, size64 - size - 1 - sizeof(uint64_t));
 	uint64_t l = BIG_ENDIAN64(size * 8);
-	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
+	memcpy(m + size64 - sizeof(uint64_t), &l, sizeof(uint64_t));
+
+	// set the m buffer size
+	*m_size = size64;
+
+	return m;
+}
+
+uint8_t* __sha64_init(const void* msg, size_t size, size_t* m_size)
+{
+	// compute the size of the m buffer that must be a multiple of 128
+	size_t size128 = (size + 1 + sizeof(uint64_t) + 127) & ~0x7F;
+
+	// allocate the m buffer
+	uint8_t* m = (uint8_t*)malloc(size128);
+
+	if(!m)
+		return NULL;
+
+	// copy the msg buffer
+	memcpy(m, msg, size);
+
+	// pad m
+	m[size] = 0x80;
+	memset(m + size + 1, 0, size128 - size - 1 - sizeof(uint64_t));
+	uint64_t l = BIG_ENDIAN64(size * 8);
+	memcpy(m + size128 - sizeof(uint64_t), &l, sizeof(uint64_t));
+
+	// set the m buffer size
+	*m_size = size128;
+
+	return m;
+}
+
+void* sha1(void* dig, const void* msg, size_t size)
+{
+	size_t m_size = 0;
+
+	// initialize the m buffer
+	uint8_t* m = __sha32_init(msg, size, &m_size);
+
+	if(!m)
+		return NULL;
+
+	// compute the number of blocks
+	size_t blocks_cnt = m_size / 64;
 
 	// the message schedule
 	uint32_t w[80];
@@ -174,7 +216,7 @@ void* sha1(void* dig, const void* msg, size_t size)
 	uint32_t T;
 
 	// for each block of m
-	for(size_t i = 0; i < block_cnt; ++i)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
@@ -256,26 +298,13 @@ void* sha1(void* dig, const void* msg, size_t size)
 // generic internal sha256 hash function
 void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 {
-	// compute the size of the m buffer that must be a multiple of 64
-	size_t m_size = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
+	size_t m_size = 0;
+
+	// initialize the m buffer
+	uint8_t* m = __sha32_init(msg, size, &m_size);
 
 	// compute the number of blocks
-	size_t block_cnt = m_size / 64;
-
-	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(m_size);
-
-	if(!m)
-		return NULL;
-
-	// copy the msg buffer
-	memcpy(m, msg, size);
-
-	// pad m
-	m[size] = 0x80;
-	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = BIG_ENDIAN64(size * 8);
-	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
+	size_t blocks_cnt = m_size / 64;
 
 	// the message schedule
 	uint32_t w[64];
@@ -298,7 +327,7 @@ void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 	uint32_t T1, T2;
 
 	// for each block of m
-	for(size_t i = 0; i < block_cnt; ++i)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
@@ -362,26 +391,13 @@ void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 // generic internal sha512 hash function
 void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
 {
-	// compute the size of the m buffer that must be a multiple of 128
-	size_t m_size = (size + 1 + sizeof(uint64_t) + 127) & ~0x7F;
+	size_t m_size = 0;
+
+	// initialize the m buffer
+	uint8_t* m = __sha64_init(msg, size, &m_size);
 
 	// compute the number of blocks
-	size_t block_cnt = m_size / 128;
-
-	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(m_size);
-
-	if(!m)
-		return NULL;
-
-	// copy the msg buffer
-	memcpy(m, msg, size);
-
-	// pad m
-	m[size] = 0x80;
-	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = BIG_ENDIAN64(size * 8);
-	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
+	size_t blocks_cnt = m_size / 128;
 
 	// the message schedule
 	uint64_t w[80];
@@ -404,7 +420,7 @@ void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
 	uint64_t T1, T2;
 
 	// for each block of m
-	for(size_t i = 0; i < block_cnt; ++i)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)

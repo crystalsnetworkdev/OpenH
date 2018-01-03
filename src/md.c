@@ -59,16 +59,13 @@
 	c = b;                                                                 \
 	b = ROTL32(T, s);
 
-void* md4(void* dig, const void* msg, size_t size)
+uint8_t* __md_init(const void* msg, size_t size, size_t* m_size)
 {
 	// compute the size of the m buffer that must be a multiple of 64
-	size_t m_size = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
-
-	// compute the number of blocks
-	size_t block_cnt = m_size / 64;
+	size_t size64 = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
 
 	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(m_size);
+	uint8_t* m = (uint8_t*)malloc(size64);
 
 	if(!m)
 		return NULL;
@@ -78,9 +75,25 @@ void* md4(void* dig, const void* msg, size_t size)
 
 	// pad m
 	m[size] = 0x80;
-	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
+	memset(m + size + 1, 0, size64 - size - 1 - sizeof(uint64_t));
 	uint64_t l = LITTLE_ENDIAN64(size * 8);
-	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
+	memcpy(m + size64 - sizeof(uint64_t), &l, sizeof(uint64_t));
+	
+	// set the m buffer size
+	*m_size = size64;
+
+	return m;
+}
+
+void* md4(void* dig, const void* msg, size_t size)
+{
+	size_t m_size = 0;
+
+	// initialize the m buffer
+	uint8_t* m = __md_init(msg, size, &m_size);
+
+	// compute the number of blocks
+	size_t blocks_cnt = m_size / 64;
 
 	// set the initial hash values
 	uint32_t h0, h1, h2, h3;
@@ -96,7 +109,7 @@ void* md4(void* dig, const void* msg, size_t size)
 	uint32_t T;
 
 	// for each block of m
-	for(size_t i = 0; i < block_cnt; ++i)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		a = h0;
 		b = h1;
@@ -175,26 +188,13 @@ void* md4(void* dig, const void* msg, size_t size)
 
 void* md5(void* dig, const void* msg, size_t size)
 {
-	// compute the size of the m buffer that must be a multiple of 64
-	size_t m_size = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
+	size_t m_size = 0;
+
+	// initialize the m buffer
+	uint8_t* m = __md_init(msg, size, &m_size);
 
 	// compute the number of blocks
-	size_t block_cnt = m_size / 64;
-
-	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(m_size);
-
-	if(!m)
-		return NULL;
-
-	// copy the msg buffer
-	memcpy(m, msg, size);
-
-	// pad m
-	m[size] = 0x80;
-	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = LITTLE_ENDIAN64(size * 8);
-	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
+	size_t blocks_cnt = m_size / 64;
 
 	// set the initial hash values
 	uint32_t h0, h1, h2, h3;
@@ -210,7 +210,7 @@ void* md5(void* dig, const void* msg, size_t size)
 	uint32_t T;
 
 	// for each block of m
-	for(size_t i = 0; i < block_cnt; ++i)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		a = h0;
 		b = h1;
