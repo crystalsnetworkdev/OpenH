@@ -1,5 +1,5 @@
 
-#include "openhl/sha.h"
+#include <openhl/sha.h>
 
 #define CH(x, y, z) (((x) & (y)) ^ (~(x) & (z)))                      // CH function (4.1) (4.2) (4.8)
 #define MAJ(x, y, z) (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))        // MAJ function (4.1) (4.3) (4.9)

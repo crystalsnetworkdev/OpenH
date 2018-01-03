@@ -6,6 +6,6 @@
 
 #pragma once
 
-#include "sha.h"
-#include "md.h"
+#include <openhl/sha.h>
+#include <openhl/md.h>
 

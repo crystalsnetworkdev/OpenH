@@ -13,7 +13,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "utils.h"
+
+#include <openhl/utils.h>
 
 #define MD4_DIGEST_SIZE 16 ///< MD4 digest size in bytes
 #define MD5_DIGEST_SIZE 16 ///< MD5 digest size in bytes

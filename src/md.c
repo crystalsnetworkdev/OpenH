@@ -1,5 +1,5 @@
 
-#include "openhl/md.h"
+#include <openhl/md.h>
 
 #define MD4_F(x, y, z) (((x) & (y)) | (~(x) & (z)))              // MD4 F function
 #define MD4_G(x, y, z) (((x) & (y)) | ((x) & (z)) | ((y) & (z))) // MD4 G function

@@ -10,7 +10,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "utils.h"
+
+#include <openhl/utils.h>
 
 #define SHA1_DIGEST_SIZE   20 ///< SHA-1 digest size in bytes
 #define SHA224_DIGEST_SIZE 28 ///< SHA-224 digest size in bytes
