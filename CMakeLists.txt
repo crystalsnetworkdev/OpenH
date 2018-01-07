@@ -1,6 +1,6 @@
 
 # minimum cmake version
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 
 # project name
 project(OpenHL)
@@ -15,7 +15,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY lib)
 
 # set compiler flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O3 -march=native")
+set(CMAKE_C_FLAGS "-Wall -O3 -march=native")
 
 # set source files
 set(SRC_OPENHL src/sha.c src/md.c)
@@ -30,4 +30,8 @@ target_link_libraries(example_sha openhl)
 # md5 example
 add_executable(example_md examples/example_md.c)
 target_link_libraries(example_md openhl)
+
+# installation
+install(DIRECTORY include/openhl DESTINATION include)
+install(TARGETS openhl ARCHIVE DESTINATION lib)
 
