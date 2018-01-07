@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>OpenHL: include/openhl/sha/sha1.h File Reference</title>
+<title>OpenHL: include/openhl/md/md5.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,7 +59,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ce2e048aa3335bc0467defe22b248bbc.html">openhl</a></li><li class="navelem"><a class="el" href="dir_bc33ac67b41c3d950b0a4e13db0dfc97.html">sha</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ce2e048aa3335bc0467defe22b248bbc.html">openhl</a></li><li class="navelem"><a class="el" href="dir_75de4aaf43632df92b9a27b405d0e60b.html">md</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -67,44 +67,46 @@ $(function() {
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">sha1.h File Reference</div>  </div>
+<div class="title">md5.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>SHA1 implementation.  
+<p>MD5 implementation.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="utils_8h_source.html">openhl/utils.h</a>&gt;</code><br />
 </div>
-<p><a href="sha1_8h_source.html">Go to the source code of this file.</a></p>
+<p><a href="md5_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a3ba9296b223f1b3c710d6b812fd860e8"><td class="memItemLeft" align="right" valign="top"><a id="a3ba9296b223f1b3c710d6b812fd860e8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha1_8h.html#a3ba9296b223f1b3c710d6b812fd860e8">SHA1_DIGEST_SIZE</a>&#160;&#160;&#160;20</td></tr>
-<tr class="memdesc:a3ba9296b223f1b3c710d6b812fd860e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-1 digest size in bytes. <br /></td></tr>
-<tr class="separator:a3ba9296b223f1b3c710d6b812fd860e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad86b38d6ab14e243543904e30f26bed2"><td class="memItemLeft" align="right" valign="top"><a id="ad86b38d6ab14e243543904e30f26bed2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="md5_8h.html#ad86b38d6ab14e243543904e30f26bed2">MD5_DIGEST_SIZE</a>&#160;&#160;&#160;16</td></tr>
+<tr class="memdesc:ad86b38d6ab14e243543904e30f26bed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">MD5 digest size in bytes. <br /></td></tr>
+<tr class="separator:ad86b38d6ab14e243543904e30f26bed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a54bf96def887c69f9116bc3911419ecc"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha1_8h.html#a54bf96def887c69f9116bc3911419ecc">sha1</a> (void *dig, const void *msg, size_t size)</td></tr>
-<tr class="memdesc:a54bf96def887c69f9116bc3911419ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-1 hash.  <a href="#a54bf96def887c69f9116bc3911419ecc">More...</a><br /></td></tr>
-<tr class="separator:a54bf96def887c69f9116bc3911419ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ba2fe830411f84a8e643c8980a87cf9"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="md5_8h.html#a9ba2fe830411f84a8e643c8980a87cf9">md5</a> (void *dig, const void *msg, size_t size)</td></tr>
+<tr class="memdesc:a9ba2fe830411f84a8e643c8980a87cf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">MD5 hash.  <a href="#a9ba2fe830411f84a8e643c8980a87cf9">More...</a><br /></td></tr>
+<tr class="separator:a9ba2fe830411f84a8e643c8980a87cf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>SHA1 implementation. </p>
-<dl class="section see"><dt>See also</dt><dd><a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf</a> </dd></dl>
+<div class="textblock"><p>MD5 implementation. </p>
+<dl class="section see"><dt>See also</dt><dd><a href="https://tools.ietf.org/html/rfc1321">https://tools.ietf.org/html/rfc1321</a> </dd>
+<dd>
+<a href="https://en.wikipedia.org/wiki/MD5">https://en.wikipedia.org/wiki/MD5</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a54bf96def887c69f9116bc3911419ecc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54bf96def887c69f9116bc3911419ecc">&#9670;&nbsp;</a></span>sha1()</h2>
+<a id="a9ba2fe830411f84a8e643c8980a87cf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ba2fe830411f84a8e643c8980a87cf9">&#9670;&nbsp;</a></span>md5()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void* sha1 </td>
+          <td class="memname">void* md5 </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>dig</em>, </td>
@@ -129,14 +131,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>SHA-1 hash. </p>
+<p>MD5 hash. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">dig</td><td>The digest buffer </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="sha1_8h.html#a3ba9296b223f1b3c710d6b812fd860e8" title="SHA-1 digest size in bytes. ">SHA1_DIGEST_SIZE</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="md5_8h.html#ad86b38d6ab14e243543904e30f26bed2" title="MD5 digest size in bytes. ">MD5_DIGEST_SIZE</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">msg</td><td>The message buffer to hash </td></tr>

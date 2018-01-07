@@ -19,7 +19,7 @@ set(CMAKE_C_FLAGS "-Wall -O3 -march=native")
 
 # set source files
 set(SRC_OPENHL_SHA src/sha/sha1.c src/sha/sha2.c)
-set(SRC_OPENHL_MD src/md.c)
+set(SRC_OPENHL_MD src/md/md4.c src/md/md5.c)
 
 # openhl library
 add_library(openhl STATIC ${SRC_OPENHL_SHA} ${SRC_OPENHL_MD})
