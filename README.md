@@ -12,6 +12,26 @@
 - MD4
 - MD5
 
+# Installing
+
+## Windows (MSYS)
+
+```
+cmake . -DCMAKE_INSTALL_PREFIX=/mingw64
+make
+make install
+
+```
+
+## Linux
+
+```
+cmake .
+make
+make install
+
+```
+
 # License
 **OpenHL** is under zlib license.
 
