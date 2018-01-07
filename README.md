@@ -1,5 +1,6 @@
 
 # OpenHL (Open Hash Library)
+
 **OpenHL** is a library of hash functions:
 - SHA-1
 - SHA-2
@@ -12,9 +13,9 @@
 - MD4
 - MD5
 
-# Installing
+## Installing
 
-## Windows (MSYS)
+### Windows (MSYS)
 
 ```
 cmake . -DCMAKE_INSTALL_PREFIX=/mingw64
@@ -23,7 +24,7 @@ make install
 
 ```
 
-## Linux
+### Linux
 
 ```
 cmake .
@@ -32,6 +33,6 @@ make install
 
 ```
 
-# License
+## License
 **OpenHL** is under zlib license.
 
