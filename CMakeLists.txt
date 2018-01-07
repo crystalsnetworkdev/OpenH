@@ -18,10 +18,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY lib)
 set(CMAKE_C_FLAGS "-Wall -O3 -march=native")
 
 # set source files
-set(SRC_OPENHL src/sha.c src/md.c)
+set(SRC_OPENHL_SHA src/sha/sha1.c src/sha/sha2.c)
+set(SRC_OPENHL_MD src/md.c)
 
 # openhl library
-add_library(openhl STATIC ${SRC_OPENHL})
+add_library(openhl STATIC ${SRC_OPENHL_SHA} ${SRC_OPENHL_MD})
 
 # sha example
 add_executable(example_sha examples/example_sha.c)

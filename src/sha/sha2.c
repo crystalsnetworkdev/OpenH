@@ -1,9 +1,8 @@
 
-#include <openhl/sha.h>
+#include <openhl/sha/sha2.h>
 
-#define CH(x, y, z) (((x) & (y)) ^ (~(x) & (z)))                      // CH function (4.1) (4.2) (4.8)
-#define MAJ(x, y, z) (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))        // MAJ function (4.1) (4.3) (4.9)
-#define PARITY(x, y, z) ((x) ^ (y) ^ (z))                             // PARITY function (4.1)
+#define CH(x, y, z) (((x) & (y)) ^ (~(x) & (z)))                      // CH function (4.2) (4.8)
+#define MAJ(x, y, z) (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))        // MAJ function (4.3) (4.9)
 
 #define SIGMA256_0(x) (ROTR32(x,  2) ^ ROTR32(x, 13) ^ ROTR32(x, 22)) // SHA-224 SHA-256 SIGMA0 function (4.4)
 #define SIGMA256_1(x) (ROTR32(x,  6) ^ ROTR32(x, 11) ^ ROTR32(x, 25)) // SHA-224 SHA-256 SIGMA1 function (4.5)
@@ -14,38 +13,6 @@
 #define SIGMA512_1(x) (ROTR64(x, 14) ^ ROTR64(x, 18) ^ ROTR64(x, 41)) // SHA-384 SHA-512 SHA-512/224 SHA-512/256 SIGMA1 function (4.11)
 #define sigma512_0(x) (ROTR64(x,  1) ^ ROTR64(x,  8) ^    SHR(x,  7)) // SHA-384 SHA-512 SHA-512/224 SHA-512/256 sigma0 function (4.12)
 #define sigma512_1(x) (ROTR64(x, 19) ^ ROTR64(x, 61) ^    SHR(x,  6)) // SHA-384 SHA-512 SHA-512/224 SHA-512/256 sigma1 function (4.13)
-
-#define SHA1_HASH_STEP0(t)                                        \
-	T = ROTL32(a, 5) + CH(b, c, d) + e + 0x5a827999 + w[(t)];     \
-	e = d;                                                        \
-	d = c;                                                        \
-	c = ROTL32(b, 30);                                            \
-	b = a;                                                        \
-	a = T;
-
-#define SHA1_HASH_STEP1(t)                                        \
-	T = ROTL32(a, 5) + PARITY(b, c, d) + e + 0x6ed9eba1 + w[(t)]; \
-	e = d;                                                        \
-	d = c;                                                        \
-	c = ROTL32(b, 30);                                            \
-	b = a;                                                        \
-	a = T;
-
-#define SHA1_HASH_STEP2(t)                                        \
-	T = ROTL32(a, 5) + MAJ(b, c, d) + e + 0x8f1bbcdc + w[(t)];    \
-	e = d;                                                        \
-	d = c;                                                        \
-	c = ROTL32(b, 30);                                            \
-	b = a;                                                        \
-	a = T;
-
-#define SHA1_HASH_STEP3(t)                                        \
-	T = ROTL32(a, 5) + PARITY(b, c, d) + e + 0xca62c1d6 + w[(t)]; \
-	e = d;                                                        \
-	d = c;                                                        \
-	c = ROTL32(b, 30);                                            \
-	b = a;                                                        \
-	a = T;
 
 #define SHA256_HASH_STEP(t)                                       \
 	T1 = h + SIGMA256_1(e) + CH(e, f, g) + K256[(t)] + w[(t)];    \
@@ -133,175 +100,26 @@ static const uint64_t InitialHashSHA512_224[8] =
 	0x8C3D37C819544DA2, 0x73E1996689DCD4D6, 0x1DFAB7AE32FF9C82, 0x679DD514582F9FCF, 0x0F6D2B697BD44DA8, 0x77E36F7304C48942, 0x3F9D85A86A1D36C8, 0x1112E6AD91D692A1 
 };
 
-uint8_t* __sha32_init(const void* msg, size_t size, size_t* m_size)
-{
-	// compute the size of the m buffer that must be a multiple of 64
-	size_t size64 = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
-
-	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(size64);
-
-	if(!m)
-		return NULL;
-
-	// copy the msg buffer
-	memcpy(m, msg, size);
-
-	// pad m
-	m[size] = 0x80;
-	memset(m + size + 1, 0, size64 - size - 1 - sizeof(uint64_t));
-	uint64_t l = BIG_ENDIAN64(size * 8);
-	memcpy(m + size64 - sizeof(uint64_t), &l, sizeof(uint64_t));
-
-	// set the m buffer size
-	*m_size = size64;
-
-	return m;
-}
-
-uint8_t* __sha64_init(const void* msg, size_t size, size_t* m_size)
-{
-	// compute the size of the m buffer that must be a multiple of 128
-	size_t size128 = (size + 1 + sizeof(uint64_t) + 127) & ~0x7F;
-
-	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(size128);
-
-	if(!m)
-		return NULL;
-
-	// copy the msg buffer
-	memcpy(m, msg, size);
-
-	// pad m
-	m[size] = 0x80;
-	memset(m + size + 1, 0, size128 - size - 1 - sizeof(uint64_t));
-	uint64_t l = BIG_ENDIAN64(size * 8);
-	memcpy(m + size128 - sizeof(uint64_t), &l, sizeof(uint64_t));
-
-	// set the m buffer size
-	*m_size = size128;
-
-	return m;
-}
-
-void* sha1(void* dig, const void* msg, size_t size)
-{
-	size_t m_size = 0;
-
-	// initialize the m buffer
-	uint8_t* m = __sha32_init(msg, size, &m_size);
-
-	if(!m)
-		return NULL;
-
-	// compute the number of blocks
-	size_t blocks_cnt = m_size / 64;
-
-	// the message schedule
-	uint32_t w[80];
-
-	// set the initial hash value
-	uint32_t h0, h1, h2, h3, h4;
-	h0 = 0x67452301;
-	h1 = 0xefcdab89;
-	h2 = 0x98badcfe;
-	h3 = 0x10325476;
-	h4 = 0xc3d2e1f0;
-
-	// the five working variables
-	uint32_t a, b, c, d, e;
-
-	// a temporary variable used in the hash loops
-	uint32_t T;
-
-	// for each block of m
-	for(size_t i = 0; i < blocks_cnt; ++i)
-	{
-		// prepare the message schedule
-		for(size_t t =  0; t < 16; ++t)
-		{
-			w[t] = BIG_ENDIAN32(((uint32_t*)(m + i * 64))[t]);
-		}
-
-		for(size_t t = 16; t < 80; ++t)
-		{
-			w[t] = ROTL32(w[t-3] ^ w[t-8] ^ w[t-14] ^ w[t-16], 1);
-		}
-
-		a = h0;
-		b = h1;
-		c = h2;
-		d = h3;
-		e = h4;
-
-		// hash loop [ 0, 19 ]
-		for(size_t t =  0; t < 20; t += 5)
-		{
-			SHA1_HASH_STEP0(t+0)
-			SHA1_HASH_STEP0(t+1)
-			SHA1_HASH_STEP0(t+2)
-			SHA1_HASH_STEP0(t+3)
-			SHA1_HASH_STEP0(t+4)
-		}
-
-		// hash loop [ 20, 39 ]
-		for(size_t t = 20; t < 40; t += 5)
-		{
-			SHA1_HASH_STEP1(t+0)
-			SHA1_HASH_STEP1(t+1)
-			SHA1_HASH_STEP1(t+2)
-			SHA1_HASH_STEP1(t+3)
-			SHA1_HASH_STEP1(t+4)
-		}
-
-		// hash loop [ 40, 59 ]
-		for(size_t t = 40; t < 60; t += 5)
-		{
-			SHA1_HASH_STEP2(t+0)
-			SHA1_HASH_STEP2(t+1)
-			SHA1_HASH_STEP2(t+2)
-			SHA1_HASH_STEP2(t+3)
-			SHA1_HASH_STEP2(t+4)
-		}
-
-		// hash loop [ 60, 79 ]
-		for(size_t t = 60; t < 80; t += 5)
-		{
-			SHA1_HASH_STEP3(t+0)
-			SHA1_HASH_STEP3(t+1)
-			SHA1_HASH_STEP3(t+2)
-			SHA1_HASH_STEP3(t+3)
-			SHA1_HASH_STEP3(t+4)
-		}
-
-		// compute the intermediate ith hash value
-		h0 += a;
-		h1 += b;
-		h2 += c;
-		h3 += d;
-		h4 += e;
-	}
-
-	free(m);
-
-	// compose the digest
-	((uint32_t*)dig)[0] = BIG_ENDIAN32(h0);
-	((uint32_t*)dig)[1] = BIG_ENDIAN32(h1);
-	((uint32_t*)dig)[2] = BIG_ENDIAN32(h2);
-	((uint32_t*)dig)[3] = BIG_ENDIAN32(h3);
-	((uint32_t*)dig)[4] = BIG_ENDIAN32(h4);
-
-	return dig;
-}
-
 // generic internal sha256 hash function
 void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 {
-	size_t m_size = 0;
+	// compute the size of the m buffer that must be a multiple of 64
+	size_t m_size = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
 
-	// initialize the m buffer
-	uint8_t* m = __sha32_init(msg, size, &m_size);
+	// allocate the m buffer
+	uint8_t* m = (uint8_t*)malloc(m_size);
+
+	if(!m)
+		return NULL;
+
+	// copy the msg buffer
+	memcpy(m, msg, size);
+
+	// pad m
+	m[size] = 0x80;
+	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
+	uint64_t l = BIG_ENDIAN64(size * 8);
+	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
 
 	// compute the number of blocks
 	size_t blocks_cnt = m_size / 64;
@@ -391,10 +209,23 @@ void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 // generic internal sha512 hash function
 void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
 {
-	size_t m_size = 0;
+	// compute the size of the m buffer that must be a multiple of 128
+	size_t m_size = (size + 1 + sizeof(uint64_t) + 127) & ~0x7F;
 
-	// initialize the m buffer
-	uint8_t* m = __sha64_init(msg, size, &m_size);
+	// allocate the m buffer
+	uint8_t* m = (uint8_t*)malloc(m_size);
+
+	if(!m)
+		return NULL;
+
+	// copy the msg buffer
+	memcpy(m, msg, size);
+
+	// pad m
+	m[size] = 0x80;
+	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
+	uint64_t l = BIG_ENDIAN64(size * 8);
+	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
 
 	// compute the number of blocks
 	size_t blocks_cnt = m_size / 128;
