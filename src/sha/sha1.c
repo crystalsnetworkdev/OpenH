@@ -37,39 +37,10 @@
 	b = a;                                                        \
 	a = T;
 
-void* sha1(void* dig, const void* msg, size_t size)
+void __sha1_transform(uint32_t h[5], const uint32_t* block, const size_t n)
 {
-	// compute the size of the m buffer that must be a multiple of 64
-	size_t m_size = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
-
-	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(m_size);
-
-	if(!m)
-		return NULL;
-
-	// copy the msg buffer
-	memcpy(m, msg, size);
-
-	// pad m
-	m[size] = 0x80;
-	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = BIG_ENDIAN64(size * 8);
-	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
-
-	// compute the number of blocks
-	size_t blocks_cnt = m_size / 64;
-
 	// the message schedule
 	uint32_t w[80];
-
-	// set the initial hash value
-	uint32_t h0, h1, h2, h3, h4;
-	h0 = 0x67452301;
-	h1 = 0xefcdab89;
-	h2 = 0x98badcfe;
-	h3 = 0x10325476;
-	h4 = 0xc3d2e1f0;
 
 	// the five working variables
 	uint32_t a, b, c, d, e;
@@ -77,13 +48,13 @@ void* sha1(void* dig, const void* msg, size_t size)
 	// a temporary variable used in the hash loops
 	uint32_t T;
 
-	// for each block of m
-	for(size_t i = 0; i < blocks_cnt; ++i)
+	// process every block
+	for(size_t i = 0; i < n; ++i, block += 16)
 	{
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
 		{
-			w[t] = BIG_ENDIAN32(((uint32_t*)(m + i * 64))[t]);
+			w[t] = BIG_ENDIAN32(block[t]);
 		}
 
 		for(size_t t = 16; t < 80; ++t)
@@ -91,11 +62,11 @@ void* sha1(void* dig, const void* msg, size_t size)
 			w[t] = ROTL32(w[t-3] ^ w[t-8] ^ w[t-14] ^ w[t-16], 1);
 		}
 
-		a = h0;
-		b = h1;
-		c = h2;
-		d = h3;
-		e = h4;
+		a = h[0];
+		b = h[1];
+		c = h[2];
+		d = h[3];
+		e = h[4];
 
 		// hash loop [ 0, 19 ]
 		for(size_t t =  0; t < 20; t += 5)
@@ -138,23 +109,61 @@ void* sha1(void* dig, const void* msg, size_t size)
 		}
 
 		// compute the intermediate ith hash value
-		h0 += a;
-		h1 += b;
-		h2 += c;
-		h3 += d;
-		h4 += e;
+		h[0] += a;
+		h[1] += b;
+		h[2] += c;
+		h[3] += d;
+		h[4] += e;
 	}
+}
 
-	free(m);
+void sha1(uint8_t* d, const uint8_t* m, size_t s)
+{
+	// set the initial hash value
+	uint32_t h[5];
+	h[0] = 0x67452301;
+	h[1] = 0xefcdab89;
+	h[2] = 0x98badcfe;
+	h[3] = 0x10325476;
+	h[4] = 0xc3d2e1f0;
+
+	// compute the number of blocks
+	size_t blocks_cnt = s / 64;
+
+	// hash process for each block
+	__sha1_transform(h, (uint32_t*)m, blocks_cnt);
+
+	// the last blocks buffer
+	uint8_t last_blocks[2 * 64];
+
+	// compute the size of the last message block
+	size_t last_m_block_size = s & 0x3F;
+
+	// compute the last blocks size
+	size_t last_blocks_size = (last_m_block_size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
+
+	// copy the last block message
+	memcpy(last_blocks, m + blocks_cnt * 64, last_m_block_size);
+
+	// append 1 bit
+	last_blocks[last_m_block_size] = 0x80;
+
+	// append 0 bits
+	memset(last_blocks + last_m_block_size + 1, 0x00, last_blocks_size - last_m_block_size - 1 - sizeof(uint64_t));
+
+	// compute and append the length in bits of the message
+	uint64_t length = BIG_ENDIAN64(s * 8);
+	memcpy(last_blocks + last_blocks_size - sizeof(uint64_t), &length, sizeof(uint64_t));
+
+	// hash process the last blocks
+	__sha1_transform(h, (uint32_t*)last_blocks, last_blocks_size / 64);
 
 	// compose the digest
-	((uint32_t*)dig)[0] = BIG_ENDIAN32(h0);
-	((uint32_t*)dig)[1] = BIG_ENDIAN32(h1);
-	((uint32_t*)dig)[2] = BIG_ENDIAN32(h2);
-	((uint32_t*)dig)[3] = BIG_ENDIAN32(h3);
-	((uint32_t*)dig)[4] = BIG_ENDIAN32(h4);
-
-	return dig;
+	((uint32_t*)d)[0] = BIG_ENDIAN32(h[0]);
+	((uint32_t*)d)[1] = BIG_ENDIAN32(h[1]);
+	((uint32_t*)d)[2] = BIG_ENDIAN32(h[2]);
+	((uint32_t*)d)[3] = BIG_ENDIAN32(h[3]);
+	((uint32_t*)d)[4] = BIG_ENDIAN32(h[4]);
 }
 
 

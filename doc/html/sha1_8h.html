@@ -89,37 +89,37 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a54bf96def887c69f9116bc3911419ecc"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha1_8h.html#a54bf96def887c69f9116bc3911419ecc">sha1</a> (void *dig, const void *msg, size_t size)</td></tr>
-<tr class="memdesc:a54bf96def887c69f9116bc3911419ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-1 hash.  <a href="#a54bf96def887c69f9116bc3911419ecc">More...</a><br /></td></tr>
-<tr class="separator:a54bf96def887c69f9116bc3911419ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac56bbcd65a5ee3552864963a37bfba1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sha1_8h.html#ac56bbcd65a5ee3552864963a37bfba1d">sha1</a> (uint8_t *d, const uint8_t *m, const size_t s)</td></tr>
+<tr class="memdesc:ac56bbcd65a5ee3552864963a37bfba1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">SHA-1 hash.  <a href="#ac56bbcd65a5ee3552864963a37bfba1d">More...</a><br /></td></tr>
+<tr class="separator:ac56bbcd65a5ee3552864963a37bfba1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SHA1 implementation. </p>
 <dl class="section see"><dt>See also</dt><dd><a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a54bf96def887c69f9116bc3911419ecc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54bf96def887c69f9116bc3911419ecc">&#9670;&nbsp;</a></span>sha1()</h2>
+<a id="ac56bbcd65a5ee3552864963a37bfba1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac56bbcd65a5ee3552864963a37bfba1d">&#9670;&nbsp;</a></span>sha1()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void* sha1 </td>
+          <td class="memname">void sha1 </td>
           <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>dig</em>, </td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const void *&#160;</td>
-          <td class="paramname"><em>msg</em>, </td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -132,26 +132,25 @@ Functions</h2></td></tr>
 <p>SHA-1 hash. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">dig</td><td>The digest buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">d</td><td>The digest buffer </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="sha1_8h.html#a3ba9296b223f1b3c710d6b812fd860e8" title="SHA-1 digest size in bytes. ">SHA1_DIGEST_SIZE</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">msg</td><td>The message buffer to hash </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of the message buffer to hash in bytes </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>The message buffer to hash </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The size of the message buffer to hash in bytes </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>NULL if an error occured, a pointer to the digest buffer otherwise </dd></dl>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 15 2018 14:25:34 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 15 2018 18:38:18 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
