@@ -23,52 +23,46 @@ extern "C" {
 #endif // __cplusplus
 
 /// \brief SHA-256 hash
-/// \param[out] dig The digest buffer \see SHA256_DIGEST_SIZE
-/// \param[in] msg The message buffer to hash
-/// \param[in] size The size of the message buffer to hash in bytes
-/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+/// \param[out] d The digest buffer \see SHA256_DIGEST_SIZE
+/// \param[in] m The message buffer to hash
+/// \param[in] s The size of the message buffer to hash in bytes
 ///
-void* sha256(void* dig, const void* msg, size_t size);
+void sha256(uint8_t* d, const uint8_t* m, const size_t s);
 
 /// \brief SHA-224 hash
-/// \param[out] dig The digest buffer \see SHA224_DIGEST_SIZE
-/// \param[in] msg The message buffer to hash
-/// \param[in] size The size of the message buffer to hash in bytes
-/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+/// \param[out] d The digest buffer \see SHA224_DIGEST_SIZE
+/// \param[in] m The message buffer to hash
+/// \param[in] s The size of the message buffer to hash in bytes
 ///
-void* sha224(void* dig, const void* msg, size_t size);
+void sha224(uint8_t* d, const uint8_t* m, const size_t s);
 
 /// \brief SHA-512 hash
-/// \param[out] dig The digest buffer \see SHA512_DIGEST_SIZE
-/// \param[in] msg The message buffer to hash
-/// \param[in] size The size of the message buffer to hash in bytes
-/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+/// \param[out] d The digest buffer \see SHA512_DIGEST_SIZE
+/// \param[in] m The message buffer to hash
+/// \param[in] s The size of the message buffer to hash in bytes
 ///
-void* sha512(void* dig, const void* msg, size_t size);
+void sha512(uint8_t* d, const uint8_t* m, const size_t s);
 
 /// \brief SHA-384 hash
-/// \param[out] dig The digest buffer \see SHA384_DIGEST_SIZE
-/// \param[in] msg The message buffer to hash
-/// \param[in] size The size of the message buffer to hash in bytes
-/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+/// \param[out] d The digest buffer \see SHA384_DIGEST_SIZE
+/// \param[in] m The message buffer to hash
+/// \param[in] s The size of the message buffer to hash in bytes
 ///
-void* sha384(void* dig, const void* msg, size_t size);
+void sha384(uint8_t* d, const uint8_t* m, const size_t s);
 
 /// \brief SHA-512/256 hash
-/// \param[out] dig The digest buffer \see SHA256_DIGEST_SIZE
-/// \param[in] msg The message buffer to hash
-/// \param[in] size The size of the message buffer to hash in bytes
-/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+/// \param[out] d The digest buffer \see SHA256_DIGEST_SIZE
+/// \param[in] m The message buffer to hash
+/// \param[in] s The size of the message buffer to hash in bytes
 ///
-void* sha512_256(void* dig, const void* msg, size_t size);
+void sha512_256(uint8_t* d, const uint8_t* m, const size_t s);
 
 /// \brief SHA-512/224 hash
-/// \param[out] dig The digest buffer \see SHA224_DIGEST_SIZE
-/// \param[in] msg The message buffer to hash
-/// \param[in] size The size of the message buffer to hash in bytes
-/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+/// \param[out] d The digest buffer \see SHA224_DIGEST_SIZE
+/// \param[in] m The message buffer to hash
+/// \param[in] s The size of the message buffer to hash in bytes
 ///
-void* sha512_224(void* dig, const void* msg, size_t size);
+void sha512_224(uint8_t* d, const uint8_t* m, const size_t s);
 
 #ifdef __cplusplus
 }

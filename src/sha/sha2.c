@@ -100,43 +100,10 @@ static const uint64_t InitialHashSHA512_224[8] =
 	0x8C3D37C819544DA2, 0x73E1996689DCD4D6, 0x1DFAB7AE32FF9C82, 0x679DD514582F9FCF, 0x0F6D2B697BD44DA8, 0x77E36F7304C48942, 0x3F9D85A86A1D36C8, 0x1112E6AD91D692A1 
 };
 
-// generic internal sha256 hash function
-void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
+void __sha256_transform(uint32_t H[8], const uint32_t* block, const size_t n)
 {
-	// compute the size of the m buffer that must be a multiple of 64
-	size_t m_size = (size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
-
-	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(m_size);
-
-	if(!m)
-		return NULL;
-
-	// copy the msg buffer
-	memcpy(m, msg, size);
-
-	// pad m
-	m[size] = 0x80;
-	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = BIG_ENDIAN64(size * 8);
-	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
-
-	// compute the number of blocks
-	size_t blocks_cnt = m_size / 64;
-
 	// the message schedule
 	uint32_t w[64];
-
-	// set the initial hash value
-	uint32_t h0, h1, h2, h3, h4, h5, h6, h7;
-	h0 = ih[0];
-	h1 = ih[1];
-	h2 = ih[2];
-	h3 = ih[3];
-	h4 = ih[4];
-	h5 = ih[5];
-	h6 = ih[6];
-	h7 = ih[7];
 
 	// the eight working variables
 	uint32_t a, b, c, d, e, f, g, h;
@@ -145,12 +112,12 @@ void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 	uint32_t T1, T2;
 
 	// for each block of m
-	for(size_t i = 0; i < blocks_cnt; ++i)
+	for(size_t i = 0; i < n; ++i, block += 16)
 	{
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
 		{
-			w[t] = BIG_ENDIAN32(((uint32_t*)(m + i * 64))[t]);
+			w[t] = BIG_ENDIAN32(block[t]);
 		}
 
 		for(size_t t = 16; t < 64; ++t)
@@ -158,14 +125,14 @@ void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 			w[t] = sigma256_1(w[t-2]) + w[t-7] + sigma256_0(w[t-15]) + w[t-16];
 		}
 
-		a = h0;
-		b = h1;
-		c = h2;
-		d = h3;
-		e = h4;
-		f = h5;
-		g = h6;
-		h = h7;
+		a = H[0];
+		b = H[1];
+		c = H[2];
+		d = H[3];
+		e = H[4];
+		f = H[5];
+		g = H[6];
+		h = H[7];
 
 		// hash loop
 		for(size_t t = 0; t < 64; t += 8)
@@ -181,68 +148,21 @@ void* __sha256(void* dig, const void* msg, size_t size, const uint32_t ih[8])
 		}
 
 		// compute the intermediate ith hash value
-		h0 += a;
-		h1 += b;
-		h2 += c;
-		h3 += d;
-		h4 += e;
-		h5 += f;
-		h6 += g;
-		h7 += h;
+		H[0] += a;
+		H[1] += b;
+		H[2] += c;
+		H[3] += d;
+		H[4] += e;
+		H[5] += f;
+		H[6] += g;
+		H[7] += h;
 	}
-
-	free(m);
-
-	// compose the digest
-	((uint32_t*)dig)[0] = BIG_ENDIAN32(h0);
-	((uint32_t*)dig)[1] = BIG_ENDIAN32(h1);
-	((uint32_t*)dig)[2] = BIG_ENDIAN32(h2);
-	((uint32_t*)dig)[3] = BIG_ENDIAN32(h3);
-	((uint32_t*)dig)[4] = BIG_ENDIAN32(h4);
-	((uint32_t*)dig)[5] = BIG_ENDIAN32(h5);
-	((uint32_t*)dig)[6] = BIG_ENDIAN32(h6);
-	((uint32_t*)dig)[7] = BIG_ENDIAN32(h7);
-
-	return dig;
 }
 
-// generic internal sha512 hash function
-void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
+void __sha512_transform(uint64_t H[8], const uint64_t* block, const size_t n)
 {
-	// compute the size of the m buffer that must be a multiple of 128
-	size_t m_size = (size + 1 + sizeof(uint64_t) + 127) & ~0x7F;
-
-	// allocate the m buffer
-	uint8_t* m = (uint8_t*)malloc(m_size);
-
-	if(!m)
-		return NULL;
-
-	// copy the msg buffer
-	memcpy(m, msg, size);
-
-	// pad m
-	m[size] = 0x80;
-	memset(m + size + 1, 0, m_size - size - 1 - sizeof(uint64_t));
-	uint64_t l = BIG_ENDIAN64(size * 8);
-	memcpy(m + m_size - sizeof(uint64_t), &l, sizeof(uint64_t));
-
-	// compute the number of blocks
-	size_t blocks_cnt = m_size / 128;
-
 	// the message schedule
 	uint64_t w[80];
-
-	// set the initial hash value
-	uint64_t h0, h1, h2, h3, h4, h5, h6, h7;
-	h0 = ih[0];
-	h1 = ih[1];
-	h2 = ih[2];
-	h3 = ih[3];
-	h4 = ih[4];
-	h5 = ih[5];
-	h6 = ih[6];
-	h7 = ih[7];
 
 	// the eight working variables
 	uint64_t a, b, c, d, e, f, g, h;
@@ -251,12 +171,12 @@ void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
 	uint64_t T1, T2;
 
 	// for each block of m
-	for(size_t i = 0; i < blocks_cnt; ++i)
+	for(size_t i = 0; i < n; ++i, block += 16)
 	{
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
 		{
-			w[t] = BIG_ENDIAN64(((uint64_t*)(m + i * 128))[t]);
+			w[t] = BIG_ENDIAN64(block[t]);
 		}
 
 		for(size_t t = 16; t < 80; ++t)
@@ -264,14 +184,14 @@ void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
 			w[t] = sigma512_1(w[t-2]) + w[t-7] + sigma512_0(w[t-15]) + w[t-16];
 		}
 
-		a = h0;
-		b = h1;
-		c = h2;
-		d = h3;
-		e = h4;
-		f = h5;
-		g = h6;
-		h = h7;
+		a = H[0];
+		b = H[1];
+		c = H[2];
+		d = H[3];
+		e = H[4];
+		f = H[5];
+		g = H[6];
+		h = H[7];
 
 		// hash loop
 		for(size_t t = 0; t < 80; t += 8)
@@ -287,88 +207,157 @@ void* __sha512(void* dig, const void* msg, size_t size, const uint64_t ih[8])
 		}
 
 		// compute the intermediate ith hash value
-		h0 += a;
-		h1 += b;
-		h2 += c;
-		h3 += d;
-		h4 += e;
-		h5 += f;
-		h6 += g;
-		h7 += h;
+		H[0] += a;
+		H[1] += b;
+		H[2] += c;
+		H[3] += d;
+		H[4] += e;
+		H[5] += f;
+		H[6] += g;
+		H[7] += h;
 	}
+}
 
-	free(m);
+void __sha256(uint8_t* d, const uint8_t* m, const size_t s, const uint32_t ih[8])
+{
+	// set the initial hash value
+	uint32_t H[8];
+	memcpy(H, ih, 8 * sizeof(uint32_t));
+
+	// compute the number of blocks
+	size_t blocks_cnt = s / 64;
+
+	// hash process for each block
+	__sha256_transform(H, (uint32_t*)m, blocks_cnt);
+
+	// the last blocks buffer
+	uint8_t last_blocks[2 * 64];
+
+	// compute the size of the last message block
+	size_t last_m_block_size = s & 0x3F;
+
+	// compute the last blocks size
+	size_t last_blocks_size = (last_m_block_size + 1 + sizeof(uint64_t) + 63) & ~0x3F;
+
+	// copy the last block message
+	memcpy(last_blocks, m + blocks_cnt * 64, last_m_block_size);
+
+	// append 1 bit
+	last_blocks[last_m_block_size] = 0x80;
+
+	// append 0 bits
+	memset(last_blocks + last_m_block_size + 1, 0x00, last_blocks_size - last_m_block_size - 1 - sizeof(uint64_t));
+
+	// compute and append the length in bits of the message
+	uint64_t length = BIG_ENDIAN64(s * 8);
+	memcpy(last_blocks + last_blocks_size - sizeof(uint64_t), &length, sizeof(uint64_t));
+
+	// hash process the last blocks
+	__sha256_transform(H, (uint32_t*)last_blocks, last_blocks_size / 64);
 
 	// compose the digest
-	((uint64_t*)dig)[0] = BIG_ENDIAN64(h0);
-	((uint64_t*)dig)[1] = BIG_ENDIAN64(h1);
-	((uint64_t*)dig)[2] = BIG_ENDIAN64(h2);
-	((uint64_t*)dig)[3] = BIG_ENDIAN64(h3);
-	((uint64_t*)dig)[4] = BIG_ENDIAN64(h4);
-	((uint64_t*)dig)[5] = BIG_ENDIAN64(h5);
-	((uint64_t*)dig)[6] = BIG_ENDIAN64(h6);
-	((uint64_t*)dig)[7] = BIG_ENDIAN64(h7);
-
-	return dig;
+	((uint32_t*)d)[0] = BIG_ENDIAN32(H[0]);
+	((uint32_t*)d)[1] = BIG_ENDIAN32(H[1]);
+	((uint32_t*)d)[2] = BIG_ENDIAN32(H[2]);
+	((uint32_t*)d)[3] = BIG_ENDIAN32(H[3]);
+	((uint32_t*)d)[4] = BIG_ENDIAN32(H[4]);
+	((uint32_t*)d)[5] = BIG_ENDIAN32(H[5]);
+	((uint32_t*)d)[6] = BIG_ENDIAN32(H[6]);
+	((uint32_t*)d)[7] = BIG_ENDIAN32(H[7]);
 }
 
-void* sha256(void* dig, const void* msg, size_t size)
+void __sha512(uint8_t* d, const uint8_t* m, const size_t s, const uint64_t ih[8])
 {
-	return __sha256(dig, msg, size, InitialHashSHA256);
+	// set the initial hash value
+	uint64_t H[8];
+	memcpy(H, ih, 8 * sizeof(uint64_t));
+
+	// compute the number of blocks
+	size_t blocks_cnt = s / 128;
+
+	// hash process for each block
+	__sha512_transform(H, (uint64_t*)m, blocks_cnt);
+
+	// the last blocks buffer
+	uint8_t last_blocks[2 * 128];
+
+	// compute the size of the last message block
+	size_t last_m_block_size = s & 0x7F;
+
+	// compute the last blocks size
+	size_t last_blocks_size = (last_m_block_size + 1 + sizeof(uint64_t) + 127) & ~0x7F;
+
+	// copy the last block message
+	memcpy(last_blocks, m + blocks_cnt * 128, last_m_block_size);
+
+	// append 1 bit
+	last_blocks[last_m_block_size] = 0x80;
+
+	// append 0 bits
+	memset(last_blocks + last_m_block_size + 1, 0x00, last_blocks_size - last_m_block_size - 1 - sizeof(uint64_t));
+
+	// compute and append the length in bits of the message
+	uint64_t length = BIG_ENDIAN64(s * 8);
+	memcpy(last_blocks + last_blocks_size - sizeof(uint64_t), &length, sizeof(uint64_t));
+
+	// hash process the last blocks
+	__sha512_transform(H, (uint64_t*)last_blocks, last_blocks_size / 128);
+
+	// compose the digest
+	((uint64_t*)d)[0] = BIG_ENDIAN64(H[0]);
+	((uint64_t*)d)[1] = BIG_ENDIAN64(H[1]);
+	((uint64_t*)d)[2] = BIG_ENDIAN64(H[2]);
+	((uint64_t*)d)[3] = BIG_ENDIAN64(H[3]);
+	((uint64_t*)d)[4] = BIG_ENDIAN64(H[4]);
+	((uint64_t*)d)[5] = BIG_ENDIAN64(H[5]);
+	((uint64_t*)d)[6] = BIG_ENDIAN64(H[6]);
+	((uint64_t*)d)[7] = BIG_ENDIAN64(H[7]);
 }
 
-void* sha224(void* dig, const void* msg, size_t size)
+void sha256(uint8_t* d, const uint8_t* m, const size_t s)
 {
-	uint8_t dig256[SHA256_DIGEST_SIZE];
-
-	if(!__sha256(dig256, msg, size, InitialHashSHA224))
-		return NULL;
-
-	memcpy(dig, dig256, SHA224_DIGEST_SIZE);
-
-	return dig;
+	__sha256(d, m, s, InitialHashSHA256);
 }
 
-
-void* sha512(void* dig, const void* msg, size_t size)
+void sha224(uint8_t* d, const uint8_t* m, const size_t s)
 {
-	return __sha512(dig, msg, size, InitialHashSHA512);
+	uint8_t d256[SHA256_DIGEST_SIZE];
+
+	__sha256(d256, m, s, InitialHashSHA224);
+
+	memcpy(d, d256, SHA224_DIGEST_SIZE);
 }
 
-void* sha384(void* dig, const void* msg, size_t size)
+void sha512(uint8_t* d, const uint8_t* m, const size_t s)
 {
-	uint8_t dig512[SHA512_DIGEST_SIZE];
-
-	if(!__sha512(dig512, msg, size, InitialHashSHA384))
-		return NULL;
-
-	memcpy(dig, dig512, SHA384_DIGEST_SIZE);
-
-	return dig;
+	__sha512(d, m, s, InitialHashSHA512);
 }
 
-void* sha512_256(void* dig, const void* msg, size_t size)
+void sha384(uint8_t* d, const uint8_t* m, const size_t s)
 {
-	uint8_t dig512[SHA512_DIGEST_SIZE];
+	uint8_t d512[SHA512_DIGEST_SIZE];
 
-	if(!__sha512(dig512, msg, size, InitialHashSHA512_256))
-		return NULL;
+	__sha512(d512, m, s, InitialHashSHA384);
 
-	memcpy(dig, dig512, SHA256_DIGEST_SIZE);
-
-	return dig;
+	memcpy(d, d512, SHA384_DIGEST_SIZE);
 }
 
-void* sha512_224(void* dig, const void* msg, size_t size)
+void sha512_256(uint8_t* d, const uint8_t* m, const size_t s)
 {
-	uint8_t dig512[SHA512_DIGEST_SIZE];
+	uint8_t d512[SHA512_DIGEST_SIZE];
 
-	if(!__sha512(dig512, msg, size, InitialHashSHA512_224))
-		return NULL;
+	__sha512(d512, m, s, InitialHashSHA512_256);
 
-	memcpy(dig, dig512, SHA224_DIGEST_SIZE);
+	memcpy(d, d512, SHA256_DIGEST_SIZE);
+}
 
-	return dig;
+void sha512_224(uint8_t* d, const uint8_t* m, const size_t s)
+{
+	uint8_t d512[SHA512_DIGEST_SIZE];
+
+	__sha512(d512, m, s, InitialHashSHA512_224);
+
+	memcpy(d, d512, SHA224_DIGEST_SIZE);
 }
 
 
