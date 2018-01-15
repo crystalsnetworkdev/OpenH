@@ -130,7 +130,7 @@ void __md5_transform(uint32_t H[4], const uint32_t* block, const size_t n)
 	}
 }
 
-void md5(uint8_t* d, const uint8_t* m, size_t s)
+void md5(uint8_t* d, const uint8_t* m, const size_t s)
 {
 	// set the initial hash values
 	uint32_t H[4];

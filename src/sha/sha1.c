@@ -117,7 +117,7 @@ void __sha1_transform(uint32_t H[5], const uint32_t* block, const size_t n)
 	}
 }
 
-void sha1(uint8_t* d, const uint8_t* m, size_t s)
+void sha1(uint8_t* d, const uint8_t* m, const size_t s)
 {
 	// set the initial hash value
 	uint32_t H[5];
