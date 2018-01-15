@@ -20,13 +20,12 @@
 extern "C" {
 #endif // __cplusplus
 
-/// \brief MD5 hash
-/// \param[out] dig The digest buffer \see MD5_DIGEST_SIZE
-/// \param[in] msg The message buffer to hash
-/// \param[in] size The size of the message buffer to hash in bytes
-/// \return NULL if an error occured, a pointer to the digest buffer otherwise
+/// \brief MD4 hash
+/// \param[out] d The digest buffer \see MD5_DIGEST_SIZE
+/// \param[in] m The message buffer to hash
+/// \param[in] s The size of the message buffer to hash in bytes
 ///
-void* md5(void* dig, const void* msg, size_t size);
+void md5(uint8_t* d, const uint8_t* m, const size_t s);
 
 #ifdef __cplusplus
 }

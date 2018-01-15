@@ -89,9 +89,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9ba2fe830411f84a8e643c8980a87cf9"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="md5_8h.html#a9ba2fe830411f84a8e643c8980a87cf9">md5</a> (void *dig, const void *msg, size_t size)</td></tr>
-<tr class="memdesc:a9ba2fe830411f84a8e643c8980a87cf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">MD5 hash.  <a href="#a9ba2fe830411f84a8e643c8980a87cf9">More...</a><br /></td></tr>
-<tr class="separator:a9ba2fe830411f84a8e643c8980a87cf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae503b20fdca5b537d09473722d347b96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="md5_8h.html#ae503b20fdca5b537d09473722d347b96">md5</a> (uint8_t *d, const uint8_t *m, const size_t s)</td></tr>
+<tr class="memdesc:ae503b20fdca5b537d09473722d347b96"><td class="mdescLeft">&#160;</td><td class="mdescRight">MD4 hash.  <a href="#ae503b20fdca5b537d09473722d347b96">More...</a><br /></td></tr>
+<tr class="separator:ae503b20fdca5b537d09473722d347b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>MD5 implementation. </p>
@@ -99,29 +99,29 @@ Functions</h2></td></tr>
 <dd>
 <a href="https://en.wikipedia.org/wiki/MD5">https://en.wikipedia.org/wiki/MD5</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a9ba2fe830411f84a8e643c8980a87cf9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ba2fe830411f84a8e643c8980a87cf9">&#9670;&nbsp;</a></span>md5()</h2>
+<a id="ae503b20fdca5b537d09473722d347b96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae503b20fdca5b537d09473722d347b96">&#9670;&nbsp;</a></span>md5()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void* md5 </td>
+          <td class="memname">void md5 </td>
           <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>dig</em>, </td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const void *&#160;</td>
-          <td class="paramname"><em>msg</em>, </td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -131,29 +131,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>MD5 hash. </p>
+<p>MD4 hash. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">dig</td><td>The digest buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">d</td><td>The digest buffer </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="md5_8h.html#ad86b38d6ab14e243543904e30f26bed2" title="MD5 digest size in bytes. ">MD5_DIGEST_SIZE</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">msg</td><td>The message buffer to hash </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of the message buffer to hash in bytes </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>The message buffer to hash </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">s</td><td>The size of the message buffer to hash in bytes </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>NULL if an error occured, a pointer to the digest buffer otherwise </dd></dl>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jan 7 2018 20:08:40 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 15 2018 14:25:34 for OpenHL by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
