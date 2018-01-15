@@ -26,7 +26,7 @@
 	c = b;                                          \
 	b = ROTL32(T, s);
 
-void __md4_transform(uint32_t* h, const uint32_t* block, const size_t n)
+void __md4_transform(uint32_t H[4], const uint32_t* block, const size_t n)
 {
 	// the four working variables
 	uint32_t a, b, c, d;
@@ -37,10 +37,10 @@ void __md4_transform(uint32_t* h, const uint32_t* block, const size_t n)
 	// process every block
 	for(size_t i = 0; i < n; ++i, block += 16)
 	{
-		a = h[0];
-		b = h[1];
-		c = h[2];
-		d = h[3];
+		a = H[0];
+		b = H[1];
+		c = H[2];
+		d = H[3];
 
 		// round 1
 		MD4_HASH_STEP0( 0,  3)
@@ -97,27 +97,27 @@ void __md4_transform(uint32_t* h, const uint32_t* block, const size_t n)
 		MD4_HASH_STEP2(15, 15)
 
 		// compute the intermediate hash value
-		h[0] += a;
-		h[1] += b;
-		h[2] += c;
-		h[3] += d;
+		H[0] += a;
+		H[1] += b;
+		H[2] += c;
+		H[3] += d;
 	}
 }
 
 void md4(uint8_t* d, const uint8_t* m, size_t s)
 {
 	// set the initial hash values
-	uint32_t h[4];
-	h[0] = 0x67452301;
-	h[1] = 0xefcdab89;
-	h[2] = 0x98badcfe;
-	h[3] = 0x10325476;
+	uint32_t H[4];
+	H[0] = 0x67452301;
+	H[1] = 0xefcdab89;
+	H[2] = 0x98badcfe;
+	H[3] = 0x10325476;
 
 	// compute the number of blocks
 	size_t blocks_cnt = s / 64;
 
 	// hash process for each block
-	__md4_transform(h, (uint32_t*)m, blocks_cnt);
+	__md4_transform(H, (uint32_t*)m, blocks_cnt);
 
 	// the last blocks buffer
 	uint8_t last_blocks[2 * 64];
@@ -142,13 +142,13 @@ void md4(uint8_t* d, const uint8_t* m, size_t s)
 	memcpy(last_blocks + last_blocks_size - sizeof(uint64_t), &length, sizeof(uint64_t));
 
 	// hash process the last blocks
-	__md4_transform(h, (uint32_t*)last_blocks, last_blocks_size / 64);
+	__md4_transform(H, (uint32_t*)last_blocks, last_blocks_size / 64);
 
 	// compose the digest
-	((uint32_t*)d)[0] = LITTLE_ENDIAN32(h[0]);
-	((uint32_t*)d)[1] = LITTLE_ENDIAN32(h[1]);
-	((uint32_t*)d)[2] = LITTLE_ENDIAN32(h[2]);
-	((uint32_t*)d)[3] = LITTLE_ENDIAN32(h[3]);
+	((uint32_t*)d)[0] = LITTLE_ENDIAN32(H[0]);
+	((uint32_t*)d)[1] = LITTLE_ENDIAN32(H[1]);
+	((uint32_t*)d)[2] = LITTLE_ENDIAN32(H[2]);
+	((uint32_t*)d)[3] = LITTLE_ENDIAN32(H[3]);
 }
 
 

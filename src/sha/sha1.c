@@ -37,7 +37,7 @@
 	b = a;                                                        \
 	a = T;
 
-void __sha1_transform(uint32_t h[5], const uint32_t* block, const size_t n)
+void __sha1_transform(uint32_t H[5], const uint32_t* block, const size_t n)
 {
 	// the message schedule
 	uint32_t w[80];
@@ -62,11 +62,11 @@ void __sha1_transform(uint32_t h[5], const uint32_t* block, const size_t n)
 			w[t] = ROTL32(w[t-3] ^ w[t-8] ^ w[t-14] ^ w[t-16], 1);
 		}
 
-		a = h[0];
-		b = h[1];
-		c = h[2];
-		d = h[3];
-		e = h[4];
+		a = H[0];
+		b = H[1];
+		c = H[2];
+		d = H[3];
+		e = H[4];
 
 		// hash loop [ 0, 19 ]
 		for(size_t t =  0; t < 20; t += 5)
@@ -109,29 +109,29 @@ void __sha1_transform(uint32_t h[5], const uint32_t* block, const size_t n)
 		}
 
 		// compute the intermediate ith hash value
-		h[0] += a;
-		h[1] += b;
-		h[2] += c;
-		h[3] += d;
-		h[4] += e;
+		H[0] += a;
+		H[1] += b;
+		H[2] += c;
+		H[3] += d;
+		H[4] += e;
 	}
 }
 
 void sha1(uint8_t* d, const uint8_t* m, size_t s)
 {
 	// set the initial hash value
-	uint32_t h[5];
-	h[0] = 0x67452301;
-	h[1] = 0xefcdab89;
-	h[2] = 0x98badcfe;
-	h[3] = 0x10325476;
-	h[4] = 0xc3d2e1f0;
+	uint32_t H[5];
+	H[0] = 0x67452301;
+	H[1] = 0xefcdab89;
+	H[2] = 0x98badcfe;
+	H[3] = 0x10325476;
+	H[4] = 0xc3d2e1f0;
 
 	// compute the number of blocks
 	size_t blocks_cnt = s / 64;
 
 	// hash process for each block
-	__sha1_transform(h, (uint32_t*)m, blocks_cnt);
+	__sha1_transform(H, (uint32_t*)m, blocks_cnt);
 
 	// the last blocks buffer
 	uint8_t last_blocks[2 * 64];
@@ -156,14 +156,14 @@ void sha1(uint8_t* d, const uint8_t* m, size_t s)
 	memcpy(last_blocks + last_blocks_size - sizeof(uint64_t), &length, sizeof(uint64_t));
 
 	// hash process the last blocks
-	__sha1_transform(h, (uint32_t*)last_blocks, last_blocks_size / 64);
+	__sha1_transform(H, (uint32_t*)last_blocks, last_blocks_size / 64);
 
 	// compose the digest
-	((uint32_t*)d)[0] = BIG_ENDIAN32(h[0]);
-	((uint32_t*)d)[1] = BIG_ENDIAN32(h[1]);
-	((uint32_t*)d)[2] = BIG_ENDIAN32(h[2]);
-	((uint32_t*)d)[3] = BIG_ENDIAN32(h[3]);
-	((uint32_t*)d)[4] = BIG_ENDIAN32(h[4]);
+	((uint32_t*)d)[0] = BIG_ENDIAN32(H[0]);
+	((uint32_t*)d)[1] = BIG_ENDIAN32(H[1]);
+	((uint32_t*)d)[2] = BIG_ENDIAN32(H[2]);
+	((uint32_t*)d)[3] = BIG_ENDIAN32(H[3]);
+	((uint32_t*)d)[4] = BIG_ENDIAN32(H[4]);
 }
 
 
