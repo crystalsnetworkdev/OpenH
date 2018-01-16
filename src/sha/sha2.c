@@ -111,7 +111,7 @@ void __sha256_transform(uint32_t H[8], const uint32_t* block, const size_t n)
 	// two temporary variables used in the hash loop
 	uint32_t T1, T2;
 
-	// for each block of m
+	// process every block
 	for(size_t i = 0; i < n; ++i, block += 16)
 	{
 		// prepare the message schedule
@@ -170,7 +170,7 @@ void __sha512_transform(uint64_t H[8], const uint64_t* block, const size_t n)
 	// two temporary variables used in the hash loop
 	uint64_t T1, T2;
 
-	// for each block of m
+	// process every block
 	for(size_t i = 0; i < n; ++i, block += 16)
 	{
 		// prepare the message schedule
