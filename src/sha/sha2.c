@@ -1,8 +1,8 @@
 
 #include <openhl/sha/sha2.h>
 
-#define CH(x, y, z) (((x) & (y)) ^ (~(x) & (z)))                      // CH function (4.2) (4.8)
-#define MAJ(x, y, z) (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))        // MAJ function (4.3) (4.9)
+#define CH(x, y, z) (((x) & (y)) ^ (~(x) & (z)))               // CH function (4.2) (4.8)
+#define MAJ(x, y, z) (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z))) // MAJ function (4.3) (4.9)
 
 #define SIGMA256_0(x) (ROTR32(x,  2) ^ ROTR32(x, 13) ^ ROTR32(x, 22)) // SHA-224 SHA-256 SIGMA0 function (4.4)
 #define SIGMA256_1(x) (ROTR32(x,  6) ^ ROTR32(x, 11) ^ ROTR32(x, 25)) // SHA-224 SHA-256 SIGMA1 function (4.5)
@@ -14,7 +14,7 @@
 #define sigma512_0(x) (ROTR64(x,  1) ^ ROTR64(x,  8) ^    SHR(x,  7)) // SHA-384 SHA-512 SHA-512/224 SHA-512/256 sigma0 function (4.12)
 #define sigma512_1(x) (ROTR64(x, 19) ^ ROTR64(x, 61) ^    SHR(x,  6)) // SHA-384 SHA-512 SHA-512/224 SHA-512/256 sigma1 function (4.13)
 
-#define SHA256_HASH_STEP(t)                                       \
+#define SHA256_HASH_STEP(t) \
 	T1 = h + SIGMA256_1(e) + CH(e, f, g) + K256[(t)] + w[(t)];    \
 	T2 = SIGMA256_0(a) + MAJ(a, b, c);                            \
 	h = g;                                                        \
@@ -26,7 +26,7 @@
 	b = a;                                                        \
 	a = T1 + T2;
 
-#define SHA512_HASH_STEP(t)                                       \
+#define SHA512_HASH_STEP(t) \
 	T1 = h + SIGMA512_1(e) + CH(e, f, g) + K512[(t)] + w[(t)];    \
 	T2 = SIGMA512_0(a) + MAJ(a, b, c);                            \
 	h = g;                                                        \
@@ -100,7 +100,7 @@ static const uint64_t InitialHashSHA512_224[8] =
 	0x8C3D37C819544DA2, 0x73E1996689DCD4D6, 0x1DFAB7AE32FF9C82, 0x679DD514582F9FCF, 0x0F6D2B697BD44DA8, 0x77E36F7304C48942, 0x3F9D85A86A1D36C8, 0x1112E6AD91D692A1 
 };
 
-void __sha256_transform(uint32_t H[8], const uint32_t* block, const size_t n)
+void __sha256_transform(uint32_t H[8], const uint32_t* blocks, const size_t blocks_cnt)
 {
 	// the message schedule
 	uint32_t w[64];
@@ -112,12 +112,12 @@ void __sha256_transform(uint32_t H[8], const uint32_t* block, const size_t n)
 	uint32_t T1, T2;
 
 	// process every block
-	for(size_t i = 0; i < n; ++i, block += 16)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
 		{
-			w[t] = BIG_ENDIAN32(block[t]);
+			w[t] = BIG_ENDIAN32(blocks[i * 16 + t]);
 		}
 
 		for(size_t t = 16; t < 64; ++t)
@@ -159,7 +159,7 @@ void __sha256_transform(uint32_t H[8], const uint32_t* block, const size_t n)
 	}
 }
 
-void __sha512_transform(uint64_t H[8], const uint64_t* block, const size_t n)
+void __sha512_transform(uint64_t H[8], const uint64_t* blocks, const size_t blocks_cnt)
 {
 	// the message schedule
 	uint64_t w[80];
@@ -171,12 +171,12 @@ void __sha512_transform(uint64_t H[8], const uint64_t* block, const size_t n)
 	uint64_t T1, T2;
 
 	// process every block
-	for(size_t i = 0; i < n; ++i, block += 16)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
 		{
-			w[t] = BIG_ENDIAN64(block[t]);
+			w[t] = BIG_ENDIAN64(blocks[i * 16 + t]);
 		}
 
 		for(size_t t = 16; t < 80; ++t)

@@ -1,11 +1,11 @@
 
 #include <openhl/sha/sha1.h>
 
-#define CH(x, y, z) (((x) & (y)) ^ (~(x) & (z)))                  // CH function (4.1)
-#define MAJ(x, y, z) (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))    // MAJ function (4.1)
-#define PARITY(x, y, z) ((x) ^ (y) ^ (z))                         // PARITY function (4.1)
+#define CH(x, y, z) (((x) & (y)) ^ (~(x) & (z)))               // CH function (4.1)
+#define MAJ(x, y, z) (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z))) // MAJ function (4.1)
+#define PARITY(x, y, z) ((x) ^ (y) ^ (z))                      // PARITY function (4.1)
 
-#define SHA1_HASH_STEP0(t)                                        \
+#define SHA1_HASH_STEP0(t) \
 	T = ROTL32(a, 5) + CH(b, c, d) + e + 0x5a827999 + w[(t)];     \
 	e = d;                                                        \
 	d = c;                                                        \
@@ -13,7 +13,7 @@
 	b = a;                                                        \
 	a = T;
 
-#define SHA1_HASH_STEP1(t)                                        \
+#define SHA1_HASH_STEP1(t) \
 	T = ROTL32(a, 5) + PARITY(b, c, d) + e + 0x6ed9eba1 + w[(t)]; \
 	e = d;                                                        \
 	d = c;                                                        \
@@ -21,7 +21,7 @@
 	b = a;                                                        \
 	a = T;
 
-#define SHA1_HASH_STEP2(t)                                        \
+#define SHA1_HASH_STEP2(t) \
 	T = ROTL32(a, 5) + MAJ(b, c, d) + e + 0x8f1bbcdc + w[(t)];    \
 	e = d;                                                        \
 	d = c;                                                        \
@@ -29,7 +29,7 @@
 	b = a;                                                        \
 	a = T;
 
-#define SHA1_HASH_STEP3(t)                                        \
+#define SHA1_HASH_STEP3(t) \
 	T = ROTL32(a, 5) + PARITY(b, c, d) + e + 0xca62c1d6 + w[(t)]; \
 	e = d;                                                        \
 	d = c;                                                        \
@@ -37,7 +37,7 @@
 	b = a;                                                        \
 	a = T;
 
-void __sha1_transform(uint32_t H[5], const uint32_t* block, const size_t n)
+void __sha1_transform(uint32_t H[5], const uint32_t* blocks, const size_t blocks_cnt)
 {
 	// the message schedule
 	uint32_t w[80];
@@ -49,12 +49,12 @@ void __sha1_transform(uint32_t H[5], const uint32_t* block, const size_t n)
 	uint32_t T;
 
 	// process every block
-	for(size_t i = 0; i < n; ++i, block += 16)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		// prepare the message schedule
 		for(size_t t =  0; t < 16; ++t)
 		{
-			w[t] = BIG_ENDIAN32(block[t]);
+			w[t] = BIG_ENDIAN32(blocks[i * 16 + t]);
 		}
 
 		for(size_t t = 16; t < 80; ++t)

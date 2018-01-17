@@ -1,40 +1,40 @@
 
 #include <openhl/md/md5.h>
 
-#define MD5_F(x, y, z) (((x) & (y)) | (~(x) & (z)))     // MD5 F function
-#define MD5_G(x, y, z) (((x) & (z)) | ((y) & ~(z)))     // MD5 G function
-#define MD5_H(x, y, z) ((x) ^ (y) ^ (z))                // MD5 H function
-#define MD5_I(x, y, z) ((y) ^ ((x) | ~(z)))             // MD5 I function
+#define MD5_F(x, y, z) (((x) & (y)) | (~(x) & (z))) // MD5 F function
+#define MD5_G(x, y, z) (((x) & (z)) | ((y) & ~(z))) // MD5 G function
+#define MD5_H(x, y, z) ((x) ^ (y) ^ (z))            // MD5 H function
+#define MD5_I(x, y, z) ((y) ^ ((x) | ~(z)))         // MD5 I function
 
-#define MD5_HASH_STEP0(t, s, k)                        \
-	T = a + MD5_F(b, c, d) + k + block[t];             \
-	a = d;                                             \
-	d = c;                                             \
-	c = b;                                             \
-	b += ROTL32(T, s);
+#define MD5_HASH_STEP0(t, s, k) \
+	T = a + MD5_F(b, c, d) + (k) + blocks[i * 16 + (t)];                   \
+	a = d;                                                                 \
+	d = c;                                                                 \
+	c = b;                                                                 \
+	b += ROTL32(T, (s));
 
-#define MD5_HASH_STEP1(t, s, k)                        \
-	T = a + MD5_G(b, c, d) + k + block[(5*t+1) & 0xF]; \
-	a = d;                                             \
-	d = c;                                             \
-	c = b;                                             \
-	b += ROTL32(T, s);
+#define MD5_HASH_STEP1(t, s, k) \
+	T = a + MD5_G(b, c, d) + (k) + blocks[i * 16 + ((5 * (t) + 1) & 0xF)]; \
+	a = d;                                                                 \
+	d = c;                                                                 \
+	c = b;                                                                 \
+	b += ROTL32(T, (s));
 
-#define MD5_HASH_STEP2(t, s, k)                        \
-	T = a + MD5_H(b, c, d) + k + block[(3*t+5) & 0xF]; \
-	a = d;                                             \
-	d = c;                                             \
-	c = b;                                             \
-	b += ROTL32(T, s);
+#define MD5_HASH_STEP2(t, s, k) \
+	T = a + MD5_H(b, c, d) + (k) + blocks[i * 16 + ((3 * (t) + 5) & 0xF)]; \
+	a = d;                                                                 \
+	d = c;                                                                 \
+	c = b;                                                                 \
+	b += ROTL32(T, (s));
 
-#define MD5_HASH_STEP3(t, s, k)                        \
-	T = a + MD5_I(b, c, d) + k + block[(7*t) & 0xF];   \
-	a = d;                                             \
-	d = c;                                             \
-	c = b;                                             \
-	b += ROTL32(T, s);
+#define MD5_HASH_STEP3(t, s, k) \
+	T = a + MD5_I(b, c, d) + (k) + blocks[i * 16 + ((7 * (t)) & 0xF)];     \
+	a = d;                                                                 \
+	d = c;                                                                 \
+	c = b;                                                                 \
+	b += ROTL32(T, (s));
 
-void __md5_transform(uint32_t H[4], const uint32_t* block, const size_t n)
+void __md5_transform(uint32_t H[4], const uint32_t* blocks, const size_t blocks_cnt)
 {
 	// the four working variables
 	uint32_t a, b, c, d;
@@ -43,7 +43,7 @@ void __md5_transform(uint32_t H[4], const uint32_t* block, const size_t n)
 	uint32_t T;
 
 	// process every block
-	for(size_t i = 0; i < n; ++i, block += 16)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		a = H[0];
 		b = H[1];

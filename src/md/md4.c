@@ -5,28 +5,28 @@
 #define MD4_G(x, y, z) (((x) & (y)) | ((x) & (z)) | ((y) & (z))) // MD4 G function
 #define MD4_H(x, y, z) ((x) ^ (y) ^ (z))                         // MD4 H function
 
-#define MD4_HASH_STEP0(t, s)                        \
-	T = a + MD4_F(b, c, d) + block[t];              \
-	a = d;                                          \
-	d = c;                                          \
-	c = b;                                          \
-	b = ROTL32(T, s);
+#define MD4_HASH_STEP0(t, s) \
+	T = a + MD4_F(b, c, d) + blocks[i * 16 + (t)];              \
+	a = d;                                                      \
+	d = c;                                                      \
+	c = b;                                                      \
+	b = ROTL32(T, (s));
 
-#define MD4_HASH_STEP1(t, s)                        \
-	T = a + MD4_G(b, c, d) + 0x5a827999 + block[t]; \
-	a = d;                                          \
-	d = c;                                          \
-	c = b;                                          \
-	b = ROTL32(T, s);
+#define MD4_HASH_STEP1(t, s) \
+	T = a + MD4_G(b, c, d) + 0x5a827999 + blocks[i * 16 + (t)]; \
+	a = d;                                                      \
+	d = c;                                                      \
+	c = b;                                                      \
+	b = ROTL32(T, (s));
 
-#define MD4_HASH_STEP2(t, s)                        \
-	T = a + MD4_H(b, c, d) + 0x6ed9eba1 + block[t]; \
-	a = d;                                          \
-	d = c;                                          \
-	c = b;                                          \
-	b = ROTL32(T, s);
+#define MD4_HASH_STEP2(t, s) \
+	T = a + MD4_H(b, c, d) + 0x6ed9eba1 + blocks[i * 16 + (t)]; \
+	a = d;                                                      \
+	d = c;                                                      \
+	c = b;                                                      \
+	b = ROTL32(T, (s));
 
-void __md4_transform(uint32_t H[4], const uint32_t* block, const size_t n)
+void __md4_transform(uint32_t H[4], const uint32_t* blocks, const size_t blocks_cnt)
 {
 	// the four working variables
 	uint32_t a, b, c, d;
@@ -35,7 +35,7 @@ void __md4_transform(uint32_t H[4], const uint32_t* block, const size_t n)
 	uint32_t T;
 
 	// process every block
-	for(size_t i = 0; i < n; ++i, block += 16)
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
 		a = H[0];
 		b = H[1];
