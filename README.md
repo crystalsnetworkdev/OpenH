@@ -1,7 +1,8 @@
 
 # OpenHL (Open Hash Library)
 
-**OpenHL** is a library of hash functions written in C:
+**OpenHL** is a library of hash functions written in C
+
 - SHA-1
 - SHA-2
 	- SHA-256
@@ -10,6 +11,11 @@
 	- SHA-384
 	- SHA-512/256
 	- SHA-512/224
+- SHA-3
+	- SHA3-224
+	- SHA3-256
+	- SHA3-384
+	- SHA3-512
 - MD4
 - MD5
 

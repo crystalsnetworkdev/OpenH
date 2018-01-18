@@ -8,4 +8,6 @@
 
 #include <openhl/sha/sha1.h>
 #include <openhl/sha/sha2.h>
+#include <openhl/sha/sha3.h>
+
 

@@ -107,6 +107,50 @@ int main(int argc, char* argv[])
 		print_digest(digest, SHA224_DIGEST_SIZE);
 	}
 
+	// cb5e3161f13371fc4a0168398a8390414aa7c4af15f797d52659b81b
+	{
+		uint8_t digest[SHA3_224_DIGEST_SIZE];
+
+		sha3_224(digest, Message, sizeof(Message));
+
+		printf("SHA3-224    : ");
+
+		print_digest(digest, SHA3_224_DIGEST_SIZE);
+	}
+
+	// 6328565230f982516aa6d83acce7f332f9d53f93536c3b611636a539a5ae635d
+	{
+		uint8_t digest[SHA3_256_DIGEST_SIZE];
+
+		sha3_256(digest, Message, sizeof(Message));
+
+		printf("SHA3-256    : ");
+
+		print_digest(digest, SHA3_256_DIGEST_SIZE);
+	}
+
+	// 79196a37bea5f07fc4da6e0c4aaac0892bd28e7686c86ce64cc6ce3b1e1602d54f9f71ba760cbba8841ddd0e9756a47f
+	{
+		uint8_t digest[SHA3_384_DIGEST_SIZE];
+
+		sha3_384(digest, Message, sizeof(Message));
+
+		printf("SHA3-384    : ");
+
+		print_digest(digest, SHA3_384_DIGEST_SIZE);
+	}
+
+	// 0ace04f37a201219a04d273ee464fda10e498b7016a471c7994c10f8d7bc06fd07fd0d5685e98df1b721336e21446cffe7694a235d4b81201fdbb0ae3afcb3a0
+	{
+		uint8_t digest[SHA3_512_DIGEST_SIZE];
+
+		sha3_512(digest, Message, sizeof(Message));
+
+		printf("SHA3-512    : ");
+
+		print_digest(digest, SHA3_512_DIGEST_SIZE);
+	}
+
 	return 0;
 }
 
