@@ -99,8 +99,16 @@ void __sha3_keccak_rho(uint64_t* A)
 
 void __sha3_keccak_pi(uint64_t* A)
 {
-	uint64_t tmp = A[13];
+	uint64_t a1 = A[1];
 
+	A[ 1] = A[ 6];
+	A[ 6] = A[ 9];
+	A[ 9] = A[22];
+	A[22] = A[14];
+	A[14] = A[20];
+	A[20] = A[ 2];
+	A[ 2] = A[12];
+	A[12] = A[13];
 	A[13] = A[19];
 	A[19] = A[23];
 	A[23] = A[15];
@@ -116,15 +124,7 @@ void __sha3_keccak_pi(uint64_t* A)
 	A[17] = A[11];
 	A[11] = A[ 7];
 	A[ 7] = A[10];
-	A[10] = A[ 1];
-	A[ 1] = A[ 6];
-	A[ 6] = A[ 9];
-	A[ 9] = A[22];
-	A[22] = A[14];
-	A[14] = A[20];
-	A[20] = A[ 2];
-	A[ 2] = A[12];
-	A[12] = tmp;
+	A[10] = a1;
 }
 
 void __sha3_keccak_chi(uint64_t* A)
