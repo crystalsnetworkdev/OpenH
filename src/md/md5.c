@@ -34,7 +34,7 @@
 	c = b;                                                                 \
 	b += ROTL32(T, (s));
 
-void __md5_transform(uint32_t H[4], const uint32_t* blocks, const size_t blocks_cnt)
+void __md5_transform(uint32_t* H, const uint32_t* blocks, const size_t blocks_cnt)
 {
 	// the four working variables
 	uint32_t a, b, c, d;

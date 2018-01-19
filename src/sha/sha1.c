@@ -37,7 +37,7 @@
 	b = a;                                                        \
 	a = T;
 
-void __sha1_transform(uint32_t H[5], const uint32_t* blocks, const size_t blocks_cnt)
+void __sha1_transform(uint32_t* H, const uint32_t* blocks, const size_t blocks_cnt)
 {
 	// the message schedule
 	uint32_t w[80];

@@ -100,7 +100,7 @@ static const uint64_t InitialHashSHA512_224[8] =
 	0x8C3D37C819544DA2, 0x73E1996689DCD4D6, 0x1DFAB7AE32FF9C82, 0x679DD514582F9FCF, 0x0F6D2B697BD44DA8, 0x77E36F7304C48942, 0x3F9D85A86A1D36C8, 0x1112E6AD91D692A1 
 };
 
-void __sha256_transform(uint32_t H[8], const uint32_t* blocks, const size_t blocks_cnt)
+void __sha256_transform(uint32_t* H, const uint32_t* blocks, const size_t blocks_cnt)
 {
 	// the message schedule
 	uint32_t w[64];
@@ -159,7 +159,7 @@ void __sha256_transform(uint32_t H[8], const uint32_t* blocks, const size_t bloc
 	}
 }
 
-void __sha512_transform(uint64_t H[8], const uint64_t* blocks, const size_t blocks_cnt)
+void __sha512_transform(uint64_t* H, const uint64_t* blocks, const size_t blocks_cnt)
 {
 	// the message schedule
 	uint64_t w[80];
@@ -218,7 +218,7 @@ void __sha512_transform(uint64_t H[8], const uint64_t* blocks, const size_t bloc
 	}
 }
 
-void __sha256(uint8_t* d, const uint8_t* m, const size_t s, const uint32_t ih[8])
+void __sha256(uint8_t* d, const uint8_t* m, const size_t s, const uint32_t* ih)
 {
 	// set the initial hash value
 	uint32_t H[8];
@@ -266,7 +266,7 @@ void __sha256(uint8_t* d, const uint8_t* m, const size_t s, const uint32_t ih[8]
 	((uint32_t*)d)[7] = BIG_ENDIAN32(H[7]);
 }
 
-void __sha512(uint8_t* d, const uint8_t* m, const size_t s, const uint64_t ih[8])
+void __sha512(uint8_t* d, const uint8_t* m, const size_t s, const uint64_t* ih)
 {
 	// set the initial hash value
 	uint64_t H[8];
