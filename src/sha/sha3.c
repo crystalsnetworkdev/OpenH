@@ -14,60 +14,6 @@ static const uint64_t RC[SHA3_KECCAK_ROUNDS] =
 	0x8000000080008081, 0x8000000000008080, 0x0000000080000001, 0x8000000080008008
 };
 
-typedef void (*sha3_pad_func)(uint8_t*, size_t);
-
-// pad function used for SHA3-224, SHA3-256, SHA3-384, SHA3-512 hash functions
-void __sha3_pad_hash(uint8_t* last_block_end, const size_t pad_bytes_cnt)
-{
-	// pad the message
-	// see table 6
-	if(pad_bytes_cnt == 1)
-	{
-		// append 0110 0001 bit string
-		last_block_end[0] = 0x86;
-	}
-	else
-	{
-		// compute the number of zero bytes
-		size_t pad_zeros_cnt = pad_bytes_cnt - 2;
-
-		// append 0110 0000 bit string
-		last_block_end[0] = 0x06;
-		
-		// append 0 bits
-		memset(last_block_end + 1, 0x00, pad_zeros_cnt);
-
-		// append 0000 0001 bit string
-		last_block_end[pad_zeros_cnt + 1] = 0x80;
-	}
-}
-
-// pad function used for SHAKE128 and SHAKE256 hash functions
-void __sha3_pad_xof(uint8_t* last_block_end, const size_t pad_bytes_cnt)
-{
-	// pad the message
-	// see table 6
-	if(pad_bytes_cnt == 1)
-	{
-		// append 1111 1001 bit string
-		last_block_end[0] = 0x9F;
-	}
-	else
-	{
-		// compute the number of zero bytes
-		size_t pad_zeros_cnt = pad_bytes_cnt - 2;
-
-		// append 1111 0001 bit string
-		last_block_end[0] = 0x1F;
-		
-		// append 0 bits
-		memset(last_block_end + 1, 0x00, pad_zeros_cnt);
-
-		// append 0000 0001 bit string
-		last_block_end[pad_zeros_cnt + 1] = 0x80;
-	}
-}
-
 void __sha3_keccak_theta(uint64_t* A)
 {
 	// step 1
@@ -254,13 +200,13 @@ void __sha3_keccak(uint8_t* S)
 	}
 }
 
+// sponge function for SHA3-224, SHA3-256, SHA3-384, SHA3-512 hash functions
 // d is the digest buffer pointer
 // m is the input buffer pointer
 // ms is the input size (in bytes)
 // ds is the digest size (in bytes)
 // r is the rate (in bytes)
-// pad is the pad function
-void __sha3_sponge(uint8_t* d, const uint8_t* m, const size_t ms, const size_t ds, const size_t r, sha3_pad_func pad)
+void __sha3_sponge_hash(uint8_t* d, const uint8_t* m, const size_t ms, const size_t ds, const size_t r)
 {
 	// compute the number of blocks
 	size_t blocks_cnt = ms / r;
@@ -291,8 +237,30 @@ void __sha3_sponge(uint8_t* d, const uint8_t* m, const size_t ms, const size_t d
 	// copy the last block
 	memcpy(last_block, m + blocks_cnt * r, last_block_size);
 
+	// compute the number of padding bytes
+	size_t pad_bytes_cnt = r - last_block_size;
+
 	// pad the last block
-	pad(last_block + last_block_size, r - last_block_size);
+	// see table 6
+	if(pad_bytes_cnt == 1)
+	{
+		// append 0110 0001 bit string
+		last_block[last_block_size] = 0x86;
+	}
+	else
+	{
+		// compute the number of zero bytes
+		size_t pad_zeros_cnt = pad_bytes_cnt - 2;
+
+		// append 0110 0000 bit string
+		last_block[last_block_size] = 0x06;
+		
+		// append 0 bits
+		memset(last_block + last_block_size + 1, 0x00, pad_zeros_cnt);
+
+		// append 0000 0001 bit string
+		last_block[last_block_size + pad_zeros_cnt + 1] = 0x80;
+	}
 
 	// process the last block
 	for(size_t j = 0; j < r; ++j)
@@ -302,65 +270,135 @@ void __sha3_sponge(uint8_t* d, const uint8_t* m, const size_t ms, const size_t d
 
 	__sha3_keccak(S);
 
-	// the Z buffer
-	uint8_t Z[SHA3_KECCAK_WIDTH];
+	// copy the digest buffer
+	memcpy(d, S, ds);
+}
 
-	// the Z buffer size
-	size_t z_size = 0;
+// sponge function for SHAKE128, SHAKE256 hash functions
+// d is the digest buffer pointer
+// m is the input buffer pointer
+// ms is the input size (in bytes)
+// ds is the digest size (in bytes)
+// r is the rate (in bytes)
+void __sha3_sponge_xof(uint8_t* d, const uint8_t* m, const size_t ms, const size_t ds, const size_t r)
+{
+	// compute the number of blocks
+	size_t blocks_cnt = ms / r;
 
-	// execute the last stage
-	while(1)
+	// the state buffer
+	uint8_t S[SHA3_KECCAK_WIDTH];
+
+	// zero the state buffer
+	memset(S, 0x00, SHA3_KECCAK_WIDTH);
+
+	// process the state buffer
+	for(size_t i = 0; i < blocks_cnt; ++i)
 	{
-		memcpy(Z + z_size, S, r);
-
-		z_size += r;
-
-		if(z_size >= ds)
-			break;
+		for(size_t j = 0; j < r; ++j)
+		{
+			S[j] ^= m[i * r + j];
+		}
 
 		__sha3_keccak(S);
 	}
 
-	// copy the digest
-	memcpy(d, Z, ds);
+	// the last block
+	uint8_t last_block[SHA3_KECCAK_WIDTH];
+
+	// compute the last block size
+	size_t last_block_size = ms % r;
+
+	// copy the last block
+	memcpy(last_block, m + blocks_cnt * r, last_block_size);
+
+	// compute the number of padding bytes
+	size_t pad_bytes_cnt = r - last_block_size;
+
+	// pad the last block
+	// see table 6
+	if(pad_bytes_cnt == 1)
+	{
+		// append 0110 0001 bit string
+		last_block[last_block_size] = 0x9F;
+	}
+	else
+	{
+		// compute the number of zero bytes
+		size_t pad_zeros_cnt = pad_bytes_cnt - 2;
+
+		// append 0110 0000 bit string
+		last_block[last_block_size] = 0x1F;
+		
+		// append 0 bits
+		memset(last_block + last_block_size + 1, 0x00, pad_zeros_cnt);
+
+		// append 0000 0001 bit string
+		last_block[last_block_size + pad_zeros_cnt + 1] = 0x80;
+	}
+
+	// process the last block
+	for(size_t j = 0; j < r; ++j)
+	{
+		S[j] ^= last_block[j];
+	}
+
+	__sha3_keccak(S);
+
+	// compute the number of digest blocks
+	size_t digest_blocks_cnt = ds / r;
+
+	// compose the digest buffer
+	for(size_t i = 0; i < digest_blocks_cnt; ++i)
+	{
+		// copy the digest block
+		memcpy(d + i * r, S, r);
+
+		__sha3_keccak(S);
+	}
+
+	// compute the last digest block size
+	size_t last_digest_block_size = ds % r;
+
+	// copy the last digest block
+	memcpy(d + digest_blocks_cnt * r, S, last_digest_block_size);
 }
 
 void sha3_224(uint8_t* d, const uint8_t* m, const size_t s)
 {
 	const size_t c = SHA3_224_DIGEST_SIZE * 2;
 
-	__sha3_sponge(d, m, s, SHA3_224_DIGEST_SIZE, SHA3_KECCAK_WIDTH - c, __sha3_pad_hash);
+	__sha3_sponge_hash(d, m, s, SHA3_224_DIGEST_SIZE, SHA3_KECCAK_WIDTH - c);
 }
 
 void sha3_256(uint8_t* d, const uint8_t* m, const size_t s)
 {
 	const size_t c = SHA3_256_DIGEST_SIZE * 2;
 
-	__sha3_sponge(d, m, s, SHA3_256_DIGEST_SIZE, SHA3_KECCAK_WIDTH - c, __sha3_pad_hash);
+	__sha3_sponge_hash(d, m, s, SHA3_256_DIGEST_SIZE, SHA3_KECCAK_WIDTH - c);
 }
 
 void sha3_384(uint8_t* d, const uint8_t* m, const size_t s)
 {
 	const size_t c = SHA3_384_DIGEST_SIZE * 2;
 
-	__sha3_sponge(d, m, s, SHA3_384_DIGEST_SIZE, SHA3_KECCAK_WIDTH - c, __sha3_pad_hash);
+	__sha3_sponge_hash(d, m, s, SHA3_384_DIGEST_SIZE, SHA3_KECCAK_WIDTH - c);
 }
 
 void sha3_512(uint8_t* d, const uint8_t* m, const size_t s)
 {
 	const size_t c = SHA3_512_DIGEST_SIZE * 2;
 
-	__sha3_sponge(d, m, s, SHA3_512_DIGEST_SIZE, SHA3_KECCAK_WIDTH - c, __sha3_pad_hash);
+	__sha3_sponge_hash(d, m, s, SHA3_512_DIGEST_SIZE, SHA3_KECCAK_WIDTH - c);
 }
 
 void shake128(uint8_t* d, const uint8_t* m, const size_t ms, const size_t ds)
 {
-	__sha3_sponge(d, m, ms, ds, SHA3_KECCAK_WIDTH - 32, __sha3_pad_xof);
+	__sha3_sponge_xof(d, m, ms, ds, SHA3_KECCAK_WIDTH - 32);
 }
 
 void shake256(uint8_t* d, const uint8_t* m, const size_t ms, const size_t ds)
 {
-	__sha3_sponge(d, m, ms, ds, SHA3_KECCAK_WIDTH - 64, __sha3_pad_xof);
+	__sha3_sponge_xof(d, m, ms, ds, SHA3_KECCAK_WIDTH - 64);
 }
 
 
