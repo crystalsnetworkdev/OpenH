@@ -1,7 +1,7 @@
 
 ///
 /// \file sha3.h
-/// \brief SHA3-224, SHA3-256, SHA3-384, SHA3-512 implementations
+/// \brief SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128, SHAKE256 implementations
 /// \see http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
 /// \see https://keccak.team/keccak_specs_summary.html
 ///
