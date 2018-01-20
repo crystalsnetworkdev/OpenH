@@ -24,6 +24,8 @@ var searchData=
   ['sha512_5f224',['sha512_224',['../sha2_8h.html#a375a07e0b43c775a3451d67b21ce5764',1,'sha2.h']]],
   ['sha512_5f256',['sha512_256',['../sha2_8h.html#ae8b6ab7dad0ab4d6933fe070beb21c24',1,'sha2.h']]],
   ['sha512_5fdigest_5fsize',['SHA512_DIGEST_SIZE',['../sha2_8h.html#a67f489f3eee39c447a6db3ba34ef75f2',1,'sha2.h']]],
+  ['shake128',['shake128',['../sha3_8h.html#ab4d33cbdbb18556894a7983995f65bc4',1,'sha3.h']]],
+  ['shake256',['shake256',['../sha3_8h.html#af1a66f9d8fdbff911e73e3c89114e874',1,'sha3.h']]],
   ['shl',['SHL',['../utils_8h.html#aca0b546d028a8de0a98389f285036296',1,'utils.h']]],
   ['shr',['SHR',['../utils_8h.html#a34f8c30efd49bafaaef210c443a467dc',1,'utils.h']]]
 ];

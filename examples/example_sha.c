@@ -151,6 +151,28 @@ int main(int argc, char* argv[])
 		print_digest(digest, SHA3_512_DIGEST_SIZE);
 	}
 
+	// 75c9ee6529509a85e36ff1c934673362
+	{
+		uint8_t digest[16];
+
+		shake128(digest, Message, sizeof(Message), sizeof(digest));
+
+		printf("SHAKE128    : ");
+
+		print_digest(digest, sizeof(digest));
+	}
+
+	// 55127d24d4c7c89869cf5cbefa86acde
+	{
+		uint8_t digest[16];
+
+		shake256(digest, Message, sizeof(Message), sizeof(digest));
+
+		printf("SHAKE256    : ");
+
+		print_digest(digest, sizeof(digest));
+	}
+
 	return 0;
 }
 

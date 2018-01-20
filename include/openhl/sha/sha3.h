@@ -51,6 +51,22 @@ void sha3_384(uint8_t* d, const uint8_t* m, const size_t s);
 ///
 void sha3_512(uint8_t* d, const uint8_t* m, const size_t s);
 
+/// \brief SHAKE128 hash
+/// \param[out] d The digest buffer
+/// \param[in] m The message buffer to hash
+/// \param[in] ms The size of the message buffer to hash in bytes
+/// \param[in] ds The size of the digest buffer in bytes
+///
+void shake128(uint8_t* d, const uint8_t* m, const size_t ms, const size_t ds);
+
+/// \brief SHAKE256 hash
+/// \param[out] d The digest buffer
+/// \param[in] m The message buffer to hash
+/// \param[in] ms The size of the message buffer to hash in bytes
+/// \param[in] ds The size of the digest buffer in bytes
+///
+void shake256(uint8_t* d, const uint8_t* m, const size_t ms, const size_t ds);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus
